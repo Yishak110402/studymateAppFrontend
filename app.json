@@ -2,14 +2,16 @@
   "expo": {
     "name": "newapp",
     "slug": "newapp",
+    "sdkVersion":"47.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "backgroundColor":"#f7f7f7",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#242424"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,11 +25,17 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#242424"
+      },
+      "package": "com.yishak36.newapp"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/splash.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ce84dcac-7527-44b0-89cc-04cc50615681"
+      }
     }
   }
 }
