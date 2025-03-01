@@ -1,40 +1,33 @@
 {
   "expo": {
-    "name": "newapp",
-    "slug": "newapp",
-    "sdkVersion":"47.0.0",
+    "name": "StudyMate+",
+    "slug": "studymate-plus",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "backgroundColor":"#f7f7f7",
+    "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#242424"
+      "backgroundColor": "#ffffff"
     },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#242424"
+        "backgroundColor": "#ffffff"
       },
-      "package": "com.yishak36.newapp"
+      "package": "com.yishak36.studymate"
     },
     "web": {
-      "favicon": "./assets/splash.png"
+      "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "ce84dcac-7527-44b0-89cc-04cc50615681"
+        "projectId": "9ae0bbd0-0d08-4868-9b04-5a9d2ee36b67"
       }
     }
   }

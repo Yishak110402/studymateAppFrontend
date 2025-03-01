@@ -39,7 +39,7 @@ export default function NewFlashCardFormPage() {
           </View>
         </Pressable>
       </View>
-      {showFileSelection && <FlashCardFileSection setLoading={setLoading} />}
+      {showFileSelection && <FlashCardFileSection name={flashCardName} setLoading={setLoading} />}
       {loading && <LoadingScreen text={"Generating Flashcards..."} />}
     </View>
   );

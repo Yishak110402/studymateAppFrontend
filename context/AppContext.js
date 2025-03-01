@@ -276,15 +276,45 @@ export function AppProvider({ children }) {
   //     await AsyncStorage.removeItem("current-user")
   //   }
   //   removeUser()
-  // }, []);  
+  // }, []);
 
-  const ip = "https://studymateapi.onrender.com";
   const [error, setError] = useState("");
   const navigation = useNavigation();
+  const ip = "https://studymateapi.onrender.com";
+  const localip = "http://192.168.0.110:6969";
+  const [allFlashCards, setAllFlashCards] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
+  const [refresh, setRefresh] = useState(0);
+  useEffect(
+    function () {
+      const loadFlashCards = async () => {
+        const loggedInUser = await AsyncStorage.getItem("current-user");
+        if (!loggedInUser) return;
+        let wantedUser = JSON.parse(loggedInUser).id;
+        const res = await fetch(`${localip}/generate/flashcards/${wantedUser}`);
+        const data = await res.json();
+        // console.log(data);
+        setAllFlashCards(data.data);
+      };
+      loadFlashCards();
+    },
+    [refresh, setRefresh]
+  );
+
+  useEffect(function () {
+    const loadUser = async () => {
+      const user = await AsyncStorage.getItem("current-user");
+      if (!user) return;
+      console.log(JSON.parse(user).id);
+      setCurrentUser(JSON.parse(user));
+    };
+    loadUser();
+  }, []);
+
   async function signUp(name, email, pwd) {
     if (!name || !email || !pwd) {
       console.log("Fill all the required fields");
-      return
+      return;
     }
     if (pwd.length < 8) {
       setError("Password should be of 8 characters or more");
@@ -312,18 +342,18 @@ export function AppProvider({ children }) {
       return;
     }
     console.log(data.message[0]);
-    
+
     setError("");
-    await AsyncStorage.setItem("current-user", JSON.stringify(data.message[0]))
+    await AsyncStorage.setItem("current-user", JSON.stringify(data.message[0]));
     navigation.navigate("Main");
     console.log("Account Created");
   }
 
-  async function logIn(email, pwd){
-    Keyboard.dismiss()
-    if(!email || !pwd){
+  async function logIn(email, pwd) {
+    Keyboard.dismiss();
+    if (!email || !pwd) {
       console.log("Fill all the required fields");
-      return      
+      return;
     }
     const res = await fetch(`${ip}/auth/login`, {
       method: "POST",
@@ -341,16 +371,16 @@ export function AppProvider({ children }) {
     }
     const data = await res.json();
     console.log(data);
-    
+
     if (data.status === "fail") {
       setError(data.message);
       console.log(data.message);
       return;
     }
-    console.log(data);    
+    console.log(data);
     setError("");
-    await AsyncStorage.setItem("current-user", JSON.stringify(data.data))
-    console.log("Logged In Successfully");    
+    await AsyncStorage.setItem("current-user", JSON.stringify(data.data));
+    console.log("Logged In Successfully");
     navigation.navigate("Main");
   }
 
@@ -359,7 +389,11 @@ export function AppProvider({ children }) {
     signUp,
     logIn,
     error,
-    ip
+    ip,
+    localip,
+    allFlashCards,
+    currentUser,
+    setRefresh,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

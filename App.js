@@ -16,6 +16,7 @@ import CreateSummary from "./screens/CreateSummary";
 import { AppProvider } from "./context/AppContext";
 import NewFlashCardFormPage from "./components/FlashCards/NewFlashCardFormPage";
 import OpenFlashCardScreen from "./screens/OpenFlashCardScreen";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -35,7 +36,7 @@ function DrawerNavFlow() {
           backgroundColor: COLORS.primary100,
         },
         headerTintColor: COLORS.primary700,
-        sceneContainerStyle: { backgroundColor: COLORS.primary700 },
+        sceneStyle: { backgroundColor: COLORS.primary700 },
       }}>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Settings" component={SettingsScreen} />
@@ -47,53 +48,54 @@ function DrawerNavFlow() {
 export default function App() {
   return (
     <>
-      <StatusBar style="inverted" translucent />
-      <NavigationContainer>
-        <AppProvider>
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-              contentStyle: {
-                backgroundColor: COLORS.primary700,
-              },
-              headerStyle: {
-                backgroundColor: COLORS.primary300,
-              },
-              headerTintColor: COLORS.primary700,
-              // animation: "fade",
-            }}
-            initialRouteName={"Main"}>
-            <Stack.Screen name="Sign Up" component={SignUpScreen} />
-            <Stack.Screen name="Log In" component={LoginScreen} />
-            <Stack.Screen name="Main" component={DrawerNavFlow} />
-            <Stack.Screen
-              name="Generate Flashcards"
-              component={GenerateFlashCards}
-              options={{ headerShown: true, title: "Your Flashcards" }}
-            />
-            <Stack.Screen
-              name="Generate Questions"
-              component={GenerateQuestions}
-              options={{ headerShown: true }}
-            />
-            <Stack.Screen
-              name="Create Summary"
-              component={CreateSummary}
-              options={{ headerShown: true }}
-            />
-            <Stack.Screen
-              name="Create Flashcard"
-              component={NewFlashCardFormPage}
-              options={{ headerShown: true }}
-            />
-            <Stack.Screen
-              name="Open FlashCard"
-              component={OpenFlashCardScreen}
-              options={{ headerShown: true }}
-            />
-          </Stack.Navigator>
-        </AppProvider>
-      </NavigationContainer>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <StatusBar style="inverted" translucent />
+        <NavigationContainer>
+          <AppProvider>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+                contentStyle: {
+                  backgroundColor: COLORS.primary700,
+                },
+                headerStyle: {
+                  backgroundColor: COLORS.primary300,
+                },
+                headerTintColor: COLORS.primary700,
+              }}
+              initialRouteName={"Sign Up"}>
+              <Stack.Screen name="Sign Up" component={SignUpScreen} />
+              <Stack.Screen name="Log In" component={LoginScreen} />
+              <Stack.Screen name="Main" component={DrawerNavFlow} />
+              <Stack.Screen
+                name="Generate Flashcards"
+                component={GenerateFlashCards}
+                options={{ headerShown: true, title: "Your Flashcards" }}
+              />
+              <Stack.Screen
+                name="Generate Questions"
+                component={GenerateQuestions}
+                options={{ headerShown: true }}
+              />
+              <Stack.Screen
+                name="Create Summary"
+                component={CreateSummary}
+                options={{ headerShown: true }}
+              />
+              <Stack.Screen
+                name="Create Flashcard"
+                component={NewFlashCardFormPage}
+                options={{ headerShown: true }}
+              />
+              <Stack.Screen
+                name="Open FlashCard"
+                component={OpenFlashCardScreen}
+                options={{ headerShown: true }}
+              />
+            </Stack.Navigator>
+          </AppProvider>
+        </NavigationContainer>
+      </GestureHandlerRootView>
     </>
   );
 }

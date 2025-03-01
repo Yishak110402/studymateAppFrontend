@@ -16,18 +16,14 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function GenerateFlashCards() {
-  const [allFlashCards, setallFlashCards] = useState([]);
+  // const [allFlashCards, setallFlashCards] = useState([]);
+  const{allFlashCards, setRefresh} = useContext(AppContext)
   const navigation = useNavigation();
   const [currCard, setCurrCard] = useState(0);
+
   useEffect(function(){
-    async function loadFlashcards(){
-      const flashes = JSON.parse(await AsyncStorage.getItem("flashcards"))
-      if(flashes){
-        setallFlashCards(flashes)
-      }
-    }
-    loadFlashcards()
-  },[allFlashCards, setallFlashCards])
+    setRefresh((prev)=> prev + 1)
+  },[])
 
   return (
     <View style={styles.container}>

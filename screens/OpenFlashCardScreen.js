@@ -7,7 +7,8 @@ import { useRoute } from "@react-navigation/native";
 
 export default function OpenFlashCardScreen() {
   const route = useRoute()
-  const flashCard = route.params.data
+  const flashCard = JSON.parse(route.params.data.content).flashcards
+  
   const { dummyFlashCards } = useContext(AppContext);
   const [pageNumber, setPageNumber] = useState(0);
   const [showQuestion, setShowQuestion] = useState(true);
