@@ -13,11 +13,11 @@ import FlashCardListItem from "../components/FlashCards/FlashCardsListItem";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../constants/COLORS";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function GenerateFlashCards() {
   // const [allFlashCards, setallFlashCards] = useState([]);
   const{allFlashCards, setRefresh} = useContext(AppContext)
+  
   const navigation = useNavigation();
   const [currCard, setCurrCard] = useState(0);
 

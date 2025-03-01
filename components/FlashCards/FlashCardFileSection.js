@@ -7,15 +7,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 
 export default function FlashCardFileSection({ setLoading, name }) {
-  const { ip, localip, currentUser } = useContext(AppContext);
+  const { ip, localip, currentUser, setAllFlashCards } = useContext(AppContext);
   const navigation = useNavigation();
   async function getFile() {
     const file = await DocumentPicker.getDocumentAsync({
       type: "application/pdf",
       multiple: false,
-    });
-    console.log(file.assets[0].uri);
-    
+    });    
+   
     if (!file.assets[0].uri) {
       console.log("No File Selected");
       return;
@@ -39,11 +38,18 @@ export default function FlashCardFileSection({ setLoading, name }) {
     if (!res.ok) {
       Alert.alert("Something went wrong. Try Again Later");
       setLoading(false);
+      return
     }
     const data = await res.json();
-    console.log(data.data.cards.flashcards);
     
+    if(data.status === "fail"){
+      Alert.alert(data.message);
+      setLoading(false);
+      return
+    }
+    console.log("Generation Completed");    
     setLoading(false);
+    setAllFlashCards((prev)=>[...prev, data.message])    
     navigation.goBack()
   }
   return (

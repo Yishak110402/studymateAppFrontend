@@ -6,14 +6,16 @@ import { COLORS } from "../constants/COLORS";
 import { useRoute } from "@react-navigation/native";
 
 export default function OpenFlashCardScreen() {
-  const route = useRoute()
-  const flashCard = JSON.parse(route.params.data.content).flashcards
+  const route = useRoute()  
+  const flashCardData = JSON.parse(route.params.data.content).flashcards
+  console.log(route.params.data);
   
+  // console.log("Flash", flashCardData);  
   const { dummyFlashCards } = useContext(AppContext);
   const [pageNumber, setPageNumber] = useState(0);
   const [showQuestion, setShowQuestion] = useState(true);
   function nextQuestion() {
-    if (pageNumber >= dummyFlashCards.length - 1) {
+    if (pageNumber >= flashCardData.length - 1) {
       return;
     }
     setPageNumber((prev) => prev + 1);
@@ -43,11 +45,11 @@ export default function OpenFlashCardScreen() {
         <View>
           {showQuestion ? (
             <Text style={styles.questionText}>
-              {flashCard[pageNumber].question}
+              {flashCardData[pageNumber].question}
             </Text>
           ) : (
             <Text style={styles.answerText}>
-              {flashCard[pageNumber].answer}
+              {flashCardData[pageNumber].answer}
             </Text>
           )}
         </View>
@@ -58,7 +60,7 @@ export default function OpenFlashCardScreen() {
           text={"Back"}
         />
         <Text style={styles.pageNum}>
-          Question {pageNumber + 1}/{dummyFlashCards.length}
+          Question {pageNumber + 1}/{flashCardData.length}
         </Text>
         <FlashCardNavigationButton pressFunction={nextQuestion} text={"Next"} />
       </View>

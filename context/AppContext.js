@@ -288,24 +288,25 @@ export function AppProvider({ children }) {
   useEffect(
     function () {
       const loadFlashCards = async () => {
+        console.log("Loading FlashCards");
+        
         const loggedInUser = await AsyncStorage.getItem("current-user");
         if (!loggedInUser) return;
         let wantedUser = JSON.parse(loggedInUser).id;
         const res = await fetch(`${localip}/generate/flashcards/${wantedUser}`);
         const data = await res.json();
-        // console.log(data);
         setAllFlashCards(data.data);
+        console.log("FlashCards Loaded");
       };
       loadFlashCards();
     },
-    [refresh, setRefresh]
+    [setRefresh]
   );
 
   useEffect(function () {
     const loadUser = async () => {
       const user = await AsyncStorage.getItem("current-user");
       if (!user) return;
-      console.log(JSON.parse(user).id);
       setCurrentUser(JSON.parse(user));
     };
     loadUser();
@@ -392,6 +393,7 @@ export function AppProvider({ children }) {
     ip,
     localip,
     allFlashCards,
+    setAllFlashCards,
     currentUser,
     setRefresh,
   };
