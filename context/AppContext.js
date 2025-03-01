@@ -288,12 +288,11 @@ export function AppProvider({ children }) {
   useEffect(
     function () {
       const loadFlashCards = async () => {
-        console.log("Loading FlashCards");
-        
+        console.log("Loading FlashCards");        
         const loggedInUser = await AsyncStorage.getItem("current-user");
         if (!loggedInUser) return;
         let wantedUser = JSON.parse(loggedInUser).id;
-        const res = await fetch(`${localip}/generate/flashcards/${wantedUser}`);
+        const res = await fetch(`${ip}/generate/flashcards/${wantedUser}`);
         const data = await res.json();
         setAllFlashCards(data.data);
         console.log("FlashCards Loaded");

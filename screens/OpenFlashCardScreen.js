@@ -1,17 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { AppContext } from "../context/AppContext";
 import FlashCardNavigationButton from "../components/FlashCards/FlashCardNavigationButton";
 import { COLORS } from "../constants/COLORS";
 import { useRoute } from "@react-navigation/native";
 
 export default function OpenFlashCardScreen() {
   const route = useRoute()  
-  const flashCardData = JSON.parse(route.params.data.content).flashcards
-  console.log(route.params.data);
+  const flashCardData = JSON.parse(route.params.data.content)
+  console.log(flashCardData);
   
-  // console.log("Flash", flashCardData);  
-  const { dummyFlashCards } = useContext(AppContext);
   const [pageNumber, setPageNumber] = useState(0);
   const [showQuestion, setShowQuestion] = useState(true);
   function nextQuestion() {

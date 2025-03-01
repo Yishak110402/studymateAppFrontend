@@ -7,7 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 
 export default function FlashCardFileSection({ setLoading, name }) {
-  const { ip, localip, currentUser, setAllFlashCards } = useContext(AppContext);
+  const { ip, currentUser, setAllFlashCards } = useContext(AppContext);
   const navigation = useNavigation();
   async function getFile() {
     const file = await DocumentPicker.getDocumentAsync({
@@ -28,7 +28,7 @@ export default function FlashCardFileSection({ setLoading, name }) {
     formData.append("name", name);
     formData.append("userId", currentUser.id);
     setLoading(true);
-    const res = await fetch(`${localip}/generate/flashcards`, {
+    const res = await fetch(`${ip}/generate/flashcards`, {
       method: "POST",
       headers: {
         "Content-Type": "multipart/form-data",
