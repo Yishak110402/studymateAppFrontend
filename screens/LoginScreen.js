@@ -13,7 +13,7 @@ import { AppContext } from "../context/AppContext";
 
 export default function LoginScreen() {
   const [showError, setShowError]= useState(false)
-  const { logIn, error } = useContext(AppContext);
+  const { logIn, error, loggingIn, setError } = useContext(AppContext);
   const [logInData, setLogInData] = useState({
     email: "",
     pwd: "",
@@ -32,6 +32,7 @@ export default function LoginScreen() {
   },[error])
 
   function goToSignUp() {
+    setError("")
     navigation.navigate("Sign Up");
   }
 
@@ -86,6 +87,7 @@ export default function LoginScreen() {
             onChangeText={(text) =>
               setLogInData((prev) => ({ ...prev, pwd: text }))
             }
+            autoCapitalize="none"
           />
           {invalid.pwd && (
             <Text style={styles.warningText}>
@@ -100,7 +102,7 @@ export default function LoginScreen() {
           android_ripple={{ color: COLORS.primary700 }}
           style={styles.btnContainer}>
           <View>
-            <Text style={styles.btnText}>Log In</Text>
+            <Text style={[styles.btnText, loggingIn && {opacity: 0.5, minWidth: 130}]}>{!loggingIn ?"Log In": "Logging In..."}</Text>
           </View>
         </Pressable>
         <View>

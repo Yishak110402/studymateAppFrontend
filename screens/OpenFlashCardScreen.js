@@ -1,15 +1,21 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import FlashCardNavigationButton from "../components/FlashCards/FlashCardNavigationButton";
 import { COLORS } from "../constants/COLORS";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 export default function OpenFlashCardScreen() {
   const route = useRoute()  
   const flashCardData = JSON.parse(route.params.data.content).flashcards
+  const navigation = useNavigation()
   
   const [pageNumber, setPageNumber] = useState(0);
   const [showQuestion, setShowQuestion] = useState(true);
+  useEffect(()=>{
+    navigation.setOptions({
+      title: route.params.data.name
+    })
+  },[])
   function nextQuestion() {
     if (pageNumber >= flashCardData.length - 1) {
       return;

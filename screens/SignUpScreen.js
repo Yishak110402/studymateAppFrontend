@@ -15,7 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SignUpScreen() {
   const [showError, setShowError] = useState(false);
-  const { error } = useContext(AppContext);
+  const { error, signingUp, setError } = useContext(AppContext);
   const [invalid, setInvalid] = useState({
     name: false,
     email: false,
@@ -50,10 +50,12 @@ export default function SignUpScreen() {
   },[])
 
   function goToLogIn() {
+    setError("")
     navigation.navigate("Log In");
   }
   function handleSignUpAndNavigation() {
     Keyboard.dismiss();
+    if(signingUp) return
     setInvalid({
       name: false,
       email: false,
@@ -140,10 +142,10 @@ export default function SignUpScreen() {
       <View>
         <Pressable
           android_ripple={{ color: COLORS.primary700 }}
-          style={styles.btnContainer}
+          style={[styles.btnContainer, signingUp && {opacity: 0.5, minWidth:130}]}
           onPress={handleSignUpAndNavigation}>
           <View>
-            <Text style={styles.btnText}>Sign Up</Text>
+            <Text style={styles.btnText}>{!signingUp ?"Sign Up": "Signing Up..."}</Text>
           </View>
         </Pressable>
         <View>

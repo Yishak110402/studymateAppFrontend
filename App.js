@@ -29,6 +29,12 @@ function DrawerNavFlow() {
         drawerStyle: {
           backgroundColor: COLORS.primary300,
         },
+        drawerItemStyle:{
+          marginVertical: 2,
+          marginHorizontal: -12,
+          borderRadius:0,
+          paddingHorizontal: 5
+        },
         drawerInactiveTintColor: COLORS.primary700,
         drawerActiveTintColor: COLORS.primary100,
         drawerActiveBackgroundColor: COLORS.primary700,

@@ -285,10 +285,12 @@ export function AppProvider({ children }) {
   const [allFlashCards, setAllFlashCards] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [refresh, setRefresh] = useState(0);
+  const [signingUp, setSigningUp] = useState(false);
+  const [loggingin, setLoggingIn] = useState(false);
   useEffect(
     function () {
       const loadFlashCards = async () => {
-        console.log("Loading FlashCards");        
+        console.log("Loading FlashCards");
         const loggedInUser = await AsyncStorage.getItem("current-user");
         if (!loggedInUser) return;
         let wantedUser = JSON.parse(loggedInUser).id;
@@ -312,11 +314,15 @@ export function AppProvider({ children }) {
   }, []);
 
   async function signUp(name, email, pwd) {
+    Keyboard.dismiss();
+    setSigningUp(true);
     if (!name || !email || !pwd) {
       console.log("Fill all the required fields");
+      setSigningUp(false);
       return;
     }
     if (pwd.length < 8) {
+      setSigningUp(false);
       setError("Password should be of 8 characters or more");
       return;
     }
@@ -333,26 +339,29 @@ export function AppProvider({ children }) {
     });
     if (!res.ok) {
       console.log("Something Went Wrong. Try Again Later");
+      setSigningUp(false);
       return;
     }
     const data = await res.json();
     if (data.status === "fail") {
       setError(data.message);
       console.log(data.message);
+      setSigningUp(false);
       return;
     }
-    console.log(data.message[0]);
-
     setError("");
     await AsyncStorage.setItem("current-user", JSON.stringify(data.message[0]));
     navigation.navigate("Main");
     console.log("Account Created");
+    setSigningUp(false);
   }
 
   async function logIn(email, pwd) {
+    setLoggingIn(true);
     Keyboard.dismiss();
     if (!email || !pwd) {
       console.log("Fill all the required fields");
+      setLoggingIn(false);
       return;
     }
     const res = await fetch(`${ip}/auth/login`, {
@@ -367,12 +376,12 @@ export function AppProvider({ children }) {
     });
     if (!res.ok) {
       console.log("Something Went Wrong. Try Again Later");
+      setLoggingIn(false);
       return;
     }
     const data = await res.json();
-    console.log(data);
-
     if (data.status === "fail") {
+      setLoggingIn(false);
       setError(data.message);
       console.log(data.message);
       return;
@@ -381,14 +390,18 @@ export function AppProvider({ children }) {
     setError("");
     await AsyncStorage.setItem("current-user", JSON.stringify(data.data));
     console.log("Logged In Successfully");
+    setLoggingIn(false);
     navigation.navigate("Main");
   }
 
   const value = {
     dummyFlashCards,
     signUp,
+    signingUp,
     logIn,
+    loggingin,
     error,
+    setError,
     ip,
     localip,
     allFlashCards,

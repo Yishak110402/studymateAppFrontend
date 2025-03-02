@@ -3,7 +3,6 @@ import * as DocumentPicker from "expo-document-picker";
 import { COLORS } from "../../constants/COLORS";
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 
 export default function FlashCardFileSection({ setLoading, name }) {
@@ -28,6 +27,7 @@ export default function FlashCardFileSection({ setLoading, name }) {
     formData.append("name", name);
     formData.append("userId", currentUser.id);
     setLoading(true);
+    console.log("Generation Started");
     const res = await fetch(`${ip}/generate/flashcards`, {
       method: "POST",
       headers: {
