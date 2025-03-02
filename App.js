@@ -17,6 +17,7 @@ import { AppProvider } from "./context/AppContext";
 import NewFlashCardFormPage from "./components/FlashCards/NewFlashCardFormPage";
 import OpenFlashCardScreen from "./screens/OpenFlashCardScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import OpenQuestionScreen from "./screens/OpenQuestionScreen";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -43,6 +44,9 @@ function DrawerNavFlow() {
         },
         headerTintColor: COLORS.primary700,
         sceneStyle: { backgroundColor: COLORS.primary700 },
+        headerTitleStyle:{
+          fontSize: 18
+        }
       }}>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Settings" component={SettingsScreen} />
@@ -68,6 +72,9 @@ export default function App() {
                   backgroundColor: COLORS2.primary300,
                 },
                 headerTintColor: COLORS.primary700,
+                headerTitleStyle:{
+                  fontSize: 18
+                }
               }}
               initialRouteName={"Sign Up"}>
               <Stack.Screen name="Sign Up" component={SignUpScreen} />
@@ -81,7 +88,7 @@ export default function App() {
               <Stack.Screen
                 name="Generate Questions"
                 component={GenerateQuestions}
-                options={{ headerShown: true }}
+                options={{ headerShown: true, title:"Your Questions" }}
               />
               <Stack.Screen
                 name="Create Summary"
@@ -98,6 +105,7 @@ export default function App() {
                 component={OpenFlashCardScreen}
                 options={{ headerShown: true }}
               />
+              <Stack.Screen name="Open Question" component={OpenQuestionScreen} options={{headerShown: true}} />
             </Stack.Navigator>
           </AppProvider>
         </NavigationContainer>

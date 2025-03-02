@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { createContext, useEffect, useState } from "react";
 import { Alert, Keyboard } from "react-native";
+import * as DocumentPicker from "expo-document-picker";
 export const AppContext = createContext();
 export function AppProvider({ children }) {
   const dummyFlashCards = [
@@ -263,6 +264,202 @@ export function AppProvider({ children }) {
       question: "What are the two major categories of NMR experiments?",
     },
   ];
+  const dummyQuestions = {
+    questions: {
+      trueFalse: [
+        { question: "Tannins are nitrogenous plant products.", answer: false },
+        {
+          question: "Tannins are soluble in most organic solvents.",
+          answer: false,
+        },
+        {
+          question:
+            "A positive Goldbeater's skin test indicates the presence of tannins.",
+          answer: true,
+        },
+        {
+          question:
+            "Condensed tannins give a blue-black precipitate with ferric salts.",
+          answer: false,
+        },
+        {
+          question:
+            "Hydrolyzable tannins are esters of sugars and phenolic acid molecules.",
+          answer: true,
+        },
+        { question: "Phenazone test precipitates all tannins.", answer: true },
+        {
+          question: "Pseudotannins give a positive Goldbeater's skin test.",
+          answer: false,
+        },
+        { question: "Myrobalan contains condensed tannins.", answer: false },
+        {
+          question: "Nutgalls are a major source of tannic acid.",
+          answer: true,
+        },
+        {
+          question: "Pale Catechu contains only condensed tannins.",
+          answer: false,
+        },
+      ],
+      multipleChoice: [
+        {
+          question: "What is the molecular weight range of tannins?",
+          options: ["50-500", "500-20000", "20000-100000", "100000+"],
+          answer: [
+            1,
+            "Tannins have a molecular weight between 500 and over 20000.",
+          ],
+        },
+        {
+          question: "Which test uses goldbeater's skin?",
+          options: [
+            "Phenazone Test",
+            "Gelatin Test",
+            "Bromine water test",
+            "Goldbeater's skin test",
+          ],
+          answer: [3, "Goldbeater's skin test utilizes goldbeater's skin."],
+        },
+        {
+          question:
+            "What color precipitate do gallitannins give with ferric salts?",
+          options: ["Brownish-green", "Blue-black", "Red", "No precipitate"],
+          answer: [
+            1,
+            "Gallitannins produce a blue-black precipitate with ferric salts.",
+          ],
+        },
+        {
+          question:
+            "Which type of tannin yields catechol derivatives on dry distillation?",
+          options: [
+            "Hydrolyzable tannins",
+            "Condensed tannins",
+            "Pseudotannins",
+            "All of the above",
+          ],
+          answer: [
+            1,
+            "Condensed tannins yield catechol derivatives upon dry distillation.",
+          ],
+        },
+        {
+          question: "What is a medicinal use of tannins?",
+          options: [
+            "Ink manufacture",
+            "Leather tanning",
+            "Astringent",
+            "Dyeing fabrics",
+          ],
+          answer: [2, "Tannins are used medicinally as astringents."],
+        },
+        {
+          question: "Which of these is a pseudotannin?",
+          options: [
+            "Tannic acid",
+            "Gallotannic acid",
+            "Chebulinic acid",
+            "Catechin",
+          ],
+          answer: [3, "Catechin is an example of a pseudotannin."],
+        },
+        {
+          question: "Myrobalan is used for:",
+          options: [
+            "Dyeing fabrics",
+            "Tanning leather",
+            "Treating chronic ulcers",
+            "Manufacturing ink",
+          ],
+          answer: [2, "Myrobalan is used externally to treat chronic ulcers."],
+        },
+        {
+          question: "What is the main tannin in nutgalls?",
+          options: [
+            "Chebulinic acid",
+            "Gallotannic acid",
+            "Ellagic acid",
+            "Catechin",
+          ],
+          answer: [1, "Nutgalls primarily contain gallotannic acid."],
+        },
+        {
+          question: "Pomegranate rind is used to treat:",
+          options: [
+            "Chronic ulcers",
+            "Non-specific diarrhea",
+            "Heavy metal toxicity",
+            "Alkaloid poisoning",
+          ],
+          answer: [
+            1,
+            "Pomegranate rind is used as a remedy for non-specific diarrhea.",
+          ],
+        },
+        {
+          question: "Pale Catechu is obtained from:",
+          options: [
+            "Acacia catechu",
+            "Quercus infectoria",
+            "Uncaria gambier",
+            "Terminalia chebula",
+          ],
+          answer: [2, "Pale Catechu is derived from Uncaria gambier."],
+        },
+        {
+          question: "Black Catechu is used as a(n):",
+          options: ["Antiseptic", "Antidote", "Astringent", "Haemostatic"],
+          answer: [2, "Black Catechu serves as an astringent."],
+        },
+        {
+          question: "Which of these is a hydrolysable tannin?",
+          options: [
+            "Catechin",
+            "Chlorogenic acid",
+            "Gallotannic acid",
+            "Cutch",
+          ],
+          answer: [2, "Gallotannic acid is a type of hydrolysable tannin."],
+        },
+        {
+          question:
+            "What is formed when condensed tannins are treated with acids or enzymes?",
+          options: [
+            "Pyrogallol derivatives",
+            "Phlobaphenes",
+            "Catechol derivatives",
+            "Ellagic acid",
+          ],
+          answer: [
+            1,
+            "Phlobaphenes are produced when condensed tannins are treated with acids or enzymes.",
+          ],
+        },
+        {
+          question:
+            "Which compound gives a bulky, colored precipitate in the phenazone test?",
+          options: [
+            "Only condensed tannins",
+            "Only hydrolysable tannins",
+            "All tannins",
+            "Pseudotannins",
+          ],
+          answer: [2, "The phenazone test precipitates all types of tannins."],
+        },
+        {
+          question:
+            "What color does a solution of hydrolysable tannins produce with ferric chloride?",
+          options: ["Green", "Brown", "Blue", "Red"],
+          answer: [
+            2,
+            "Hydrolysable tannins solutions turn blue when mixed with ferric chloride.",
+          ],
+        },
+      ],
+    },
+    nums: [10, 15],
+  };
 
   // useEffect(function(){
   //   async function deleteAllFlashcards(){
@@ -288,13 +485,6 @@ export function AppProvider({ children }) {
   const [signingUp, setSigningUp] = useState(false);
   const [loggingin, setLoggingIn] = useState(false);
   const [flashCardsLoading, setFlashCardsLoading] = useState(false);
-
-  // useEffect(
-
-  //     loadFlashCards();
-  //   },
-  //   [setRefresh]
-  // );
 
   const loadFlashCards = async () => {
     setFlashCardsLoading(true);
@@ -349,7 +539,10 @@ export function AppProvider({ children }) {
     });
     if (!res.ok) {
       console.log("Something Went Wrong. Try Again Later");
-      Alert.alert("Something Went Wrong.", "An error occured when trying to sign up.")
+      Alert.alert(
+        "Something Went Wrong.",
+        "An error occured when trying to sign up."
+      );
       setSigningUp(false);
       return;
     }
@@ -362,7 +555,7 @@ export function AppProvider({ children }) {
     }
     setError("");
     await AsyncStorage.setItem("current-user", JSON.stringify(data.message[0]));
-    setCurrentUser(data.data)
+    setCurrentUser(data.data);
     navigation.navigate("Main");
     console.log("Account Created");
     setSigningUp(false);
@@ -388,7 +581,10 @@ export function AppProvider({ children }) {
     });
     if (!res.ok) {
       console.log("Something Went Wrong. Try Again Later");
-      Alert.alert("Something Went Wrong.", "An error occured when trying to log in.")
+      Alert.alert(
+        "Something Went Wrong.",
+        "An error occured when trying to log in."
+      );
       setLoggingIn(false);
       return;
     }
@@ -401,7 +597,7 @@ export function AppProvider({ children }) {
     }
     console.log(data.data.id);
     setError("");
-    setCurrentUser(data.data)
+    setCurrentUser(data.data);
     await AsyncStorage.setItem("current-user", JSON.stringify(data.data));
     console.log("Logged In Successfully");
     setLoggingIn(false);
@@ -410,6 +606,7 @@ export function AppProvider({ children }) {
 
   const value = {
     dummyFlashCards,
+    dummyQuestions,
     signUp,
     signingUp,
     logIn,
