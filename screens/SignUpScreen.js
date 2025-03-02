@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   btnText: {
-    color: "white",
+    color: COLORS.primary700,
     fontSize: 15,
   },
   navTxt: {

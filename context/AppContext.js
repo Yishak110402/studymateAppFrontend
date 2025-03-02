@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { createContext, useEffect, useState } from "react";
-import { Keyboard } from "react-native";
+import { Alert, Keyboard } from "react-native";
 export const AppContext = createContext();
 export function AppProvider({ children }) {
   const dummyFlashCards = [
@@ -287,22 +287,32 @@ export function AppProvider({ children }) {
   const [refresh, setRefresh] = useState(0);
   const [signingUp, setSigningUp] = useState(false);
   const [loggingin, setLoggingIn] = useState(false);
-  useEffect(
-    function () {
-      const loadFlashCards = async () => {
-        console.log("Loading FlashCards");
-        const loggedInUser = await AsyncStorage.getItem("current-user");
-        if (!loggedInUser) return;
-        let wantedUser = JSON.parse(loggedInUser).id;
-        const res = await fetch(`${ip}/generate/flashcards/${wantedUser}`);
-        const data = await res.json();
-        setAllFlashCards(data.data);
-        console.log("FlashCards Loaded");
-      };
-      loadFlashCards();
-    },
-    [setRefresh]
-  );
+  const [flashCardsLoading, setFlashCardsLoading] = useState(false);
+
+  // useEffect(
+
+  //     loadFlashCards();
+  //   },
+  //   [setRefresh]
+  // );
+
+  const loadFlashCards = async () => {
+    setFlashCardsLoading(true);
+    console.log("Loading FlashCards");
+    const loggedInUser = await AsyncStorage.getItem("current-user");
+    if (!loggedInUser) return;
+    let wantedUser = JSON.parse(loggedInUser).id;
+    const res = await fetch(`${ip}/generate/flashcards/${wantedUser}`);
+    const data = await res.json();
+    if (data.status === "fail") {
+      console.log("Failed to load flashcards");
+      setFlashCardsLoading(false);
+      return;
+    }
+    setAllFlashCards(data.data);
+    console.log("FlashCards Loaded");
+    setFlashCardsLoading(false);
+  };
 
   useEffect(function () {
     const loadUser = async () => {
@@ -339,6 +349,7 @@ export function AppProvider({ children }) {
     });
     if (!res.ok) {
       console.log("Something Went Wrong. Try Again Later");
+      Alert.alert("Something Went Wrong.", "An error occured when trying to sign up.")
       setSigningUp(false);
       return;
     }
@@ -351,6 +362,7 @@ export function AppProvider({ children }) {
     }
     setError("");
     await AsyncStorage.setItem("current-user", JSON.stringify(data.message[0]));
+    setCurrentUser(data.data)
     navigation.navigate("Main");
     console.log("Account Created");
     setSigningUp(false);
@@ -376,6 +388,7 @@ export function AppProvider({ children }) {
     });
     if (!res.ok) {
       console.log("Something Went Wrong. Try Again Later");
+      Alert.alert("Something Went Wrong.", "An error occured when trying to log in.")
       setLoggingIn(false);
       return;
     }
@@ -386,8 +399,9 @@ export function AppProvider({ children }) {
       console.log(data.message);
       return;
     }
-    console.log(data);
+    console.log(data.data.id);
     setError("");
+    setCurrentUser(data.data)
     await AsyncStorage.setItem("current-user", JSON.stringify(data.data));
     console.log("Logged In Successfully");
     setLoggingIn(false);
@@ -408,6 +422,8 @@ export function AppProvider({ children }) {
     setAllFlashCards,
     currentUser,
     setRefresh,
+    loadFlashCards,
+    flashCardsLoading,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

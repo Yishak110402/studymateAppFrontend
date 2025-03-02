@@ -14,7 +14,7 @@ export default function FlashCardNavigationButton({text, pressFunction}){
 const styles = StyleSheet.create({
     buttonContainer:{
         width:85,
-        backgroundColor:COLORS.primary100,
+        backgroundColor:COLORS.primary500,
         textAlign:'center',
         alignItems:'center',
         justifyContent:'center',

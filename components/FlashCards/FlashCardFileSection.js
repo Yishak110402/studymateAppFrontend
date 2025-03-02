@@ -9,6 +9,7 @@ export default function FlashCardFileSection({ setLoading, name }) {
   const { ip, currentUser, setAllFlashCards } = useContext(AppContext);
   const navigation = useNavigation();
   async function getFile() {
+    console.log(currentUser.id);    
     const file = await DocumentPicker.getDocumentAsync({
       type: "application/pdf",
       multiple: false,

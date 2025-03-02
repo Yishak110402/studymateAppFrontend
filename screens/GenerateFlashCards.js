@@ -10,20 +10,24 @@ import {
 import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import FlashCardListItem from "../components/FlashCards/FlashCardsListItem";
+import LoadingScreen from "../components/LoadingScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../constants/COLORS";
 import { useNavigation } from "@react-navigation/native";
 
 export default function GenerateFlashCards() {
   // const [allFlashCards, setallFlashCards] = useState([]);
-  const{allFlashCards, setRefresh} = useContext(AppContext)
-  
+  const { allFlashCards, setRefresh, loadFlashCards, flashCardsLoading } =
+    useContext(AppContext);
+
   const navigation = useNavigation();
   const [currCard, setCurrCard] = useState(0);
-
-  useEffect(function(){
-    setRefresh((prev)=> prev + 1)
-  },[])
+  useEffect(function () {
+    loadFlashCards();
+  }, []);
+  useEffect(function () {
+    setRefresh((prev) => prev + 1);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -57,6 +61,7 @@ export default function GenerateFlashCards() {
           </Pressable>
         </View>
       </View>
+      {flashCardsLoading && <LoadingScreen text={"Loading Flashcards..."} />}
     </View>
   );
 }
@@ -73,10 +78,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  noFlashCards:{
-    color:COLORS.primary100,
+  noFlashCards: {
+    color: COLORS.primary100,
     fontSize: 16,
-    textAlign:'center',
-    marginVertical: 20
-  }
+    textAlign: "center",
+    marginVertical: 20,
+  },
 });

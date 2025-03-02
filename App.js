@@ -8,7 +8,7 @@ import HomeScreen from "./screens/HomeScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import { Ionicons } from "@expo/vector-icons";
 import SavedFlashCards from "./screens/SavedFlashCardsScree";
-import { COLORS } from "./constants/COLORS";
+import { COLORS, COLORS2 } from "./constants/COLORS";
 import { StatusBar } from "expo-status-bar";
 import GenerateFlashCards from "./screens/GenerateFlashCards";
 import GenerateQuestions from "./screens/GenerateQuestions";
@@ -55,17 +55,17 @@ export default function App() {
   return (
     <>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <StatusBar style="inverted" translucent />
+        <StatusBar style="dark" translucent />
         <NavigationContainer>
           <AppProvider>
             <Stack.Navigator
               screenOptions={{
                 headerShown: false,
                 contentStyle: {
-                  backgroundColor: COLORS.primary700,
+                  backgroundColor:COLORS2.primary700
                 },
                 headerStyle: {
-                  backgroundColor: COLORS.primary300,
+                  backgroundColor: COLORS2.primary300,
                 },
                 headerTintColor: COLORS.primary700,
               }}
