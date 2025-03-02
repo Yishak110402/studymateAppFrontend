@@ -18,6 +18,7 @@ import NewFlashCardFormPage from "./components/FlashCards/NewFlashCardFormPage";
 import OpenFlashCardScreen from "./screens/OpenFlashCardScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import OpenQuestionScreen from "./screens/OpenQuestionScreen";
+import CreateQuestionsForm from "./components/Questions/CreateQuestionsForm";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -106,6 +107,7 @@ export default function App() {
                 options={{ headerShown: true }}
               />
               <Stack.Screen name="Open Question" component={OpenQuestionScreen} options={{headerShown: true}} />
+              <Stack.Screen name="Create Question" component={CreateQuestionsForm} options={{headerShown: true}} />
             </Stack.Navigator>
           </AppProvider>
         </NavigationContainer>

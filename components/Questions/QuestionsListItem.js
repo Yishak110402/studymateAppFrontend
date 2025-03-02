@@ -44,6 +44,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    alignSelf:'flex-start',
+    width: "100%"
   },
   questionsTitle: {
     fontSize: 17,

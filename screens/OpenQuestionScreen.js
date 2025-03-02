@@ -29,11 +29,10 @@ export default function OpenQuestionScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 15,
+    paddingTop: 15,
     paddingHorizontal: 10,
     paddingBottom: 0,
     flex: 1,
-    marginBottom: 100
   },
   trueFalseContainer: {},
   questionsHeader: {
