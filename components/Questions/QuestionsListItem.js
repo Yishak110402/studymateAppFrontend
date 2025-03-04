@@ -3,26 +3,36 @@ import { Text, View } from "react-native";
 import { COLORS } from "../../constants/COLORS";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-export default function QuestionsListItem({pressFunction}) {
+export default function QuestionsListItem({ question = "Name of question"}) {
+  // console.log(question.content);
+  const questionsList = JSON.parse(question.content);
+  console.log(questionsList);
+  
+  
     const navigation = useNavigation()
     const press = ()=>{
         navigation.navigate("Open Question")
     }   
+    const goToCreateQuestions = ()=>{
+      navigation.navigate("Open Question", {
+        question
+      });
+    }
   return (
     <Pressable
       style={styles.questionContainer}
       android_ripple={{ color: COLORS.primary700 }}
-      onPress={press}>
+      onPress={goToCreateQuestions}>
       <View>
         <Text style={styles.questionsTitle}>
-          Name of the question goes here
+          {question.name}
         </Text>
         <View style={styles.detailsContainer}>
           <View style={styles.details}>
-            <Text style={styles.detailsText}>10 T/F</Text>
+            <Text style={styles.detailsText}>{questionsList.questions.trueFalse.length} T/F</Text>
           </View>
           <View style={styles.details}>
-            <Text style={styles.detailsText}>10 MCQ</Text>
+            <Text style={styles.detailsText}>{questionsList.questions.multipleChoice.length} MCQ</Text>
           </View>
         </View>
       </View>
@@ -35,11 +45,11 @@ export default function QuestionsListItem({pressFunction}) {
 const styles = StyleSheet.create({
   questionContainer: {
     backgroundColor: COLORS.primary300,
-    margin: 5,
+    margin: 0,
     marginBottom: 10,
     paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
+    paddingHorizontal: 15,
+    borderRadius: 7,
     elevation: 4,
     flexDirection: "row",
     alignItems: "center",

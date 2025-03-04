@@ -6,7 +6,7 @@ import { AppContext } from "../../context/AppContext";
 import { useNavigation } from "@react-navigation/native";
 
 export default function FlashCardFileSection({ setLoading, name }) {
-  const { ip, currentUser, setAllFlashCards } = useContext(AppContext);
+  const { ip, currentUser, setAllFlashCards, localip } = useContext(AppContext);
   const navigation = useNavigation();
   async function getFile() {
     console.log(currentUser.id);    

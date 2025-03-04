@@ -11,12 +11,13 @@ export default function LoadingScreen({text}){
 const styles = StyleSheet.create({
     loadingContainer:{
         width:"110%",
-        height:"110%",
+        height:700,
         justifyContent:"center",
         alignItems:"center",
         position:"absolute",
         zIndex: 1000,
         backgroundColor:"rgba(0,0,0,0.6)",
+        flex: 1
     },
     loadingText:{
         fontSize: 28,

@@ -16,8 +16,7 @@ import { COLORS } from "../constants/COLORS";
 import { useNavigation } from "@react-navigation/native";
 
 export default function GenerateFlashCards() {
-  // const [allFlashCards, setallFlashCards] = useState([]);
-  const { allFlashCards, setRefresh, loadFlashCards, flashCardsLoading } =
+  const { allFlashCards, setRefresh, loadFlashCards, flashCardsLoading} =
     useContext(AppContext);
 
   const navigation = useNavigation();

@@ -480,11 +480,28 @@ export function AppProvider({ children }) {
   const ip = "https://studymateapi.onrender.com";
   const localip = "http://192.168.0.110:6969";
   const [allFlashCards, setAllFlashCards] = useState([]);
+  const [allQuestions, setAllQuestions] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [refresh, setRefresh] = useState(0);
   const [signingUp, setSigningUp] = useState(false);
   const [loggingin, setLoggingIn] = useState(false);
   const [flashCardsLoading, setFlashCardsLoading] = useState(false);
+
+  useEffect(function () {
+    const testBackend = async () => {
+      const res = await fetch(`${localip}/test`);
+      if (!res.ok) {
+        console.log("Test failed");
+        return;
+      }
+      const data = await res.json();
+      if (data.status !== "success") {
+        console.log("Test Failed");
+      }
+      console.log("Test Success");
+    };
+    testBackend();
+  }, []);
 
   const loadFlashCards = async () => {
     setFlashCardsLoading(true);
@@ -617,6 +634,8 @@ export function AppProvider({ children }) {
     localip,
     allFlashCards,
     setAllFlashCards,
+    allQuestions,
+    setAllQuestions,
     currentUser,
     setRefresh,
     loadFlashCards,

@@ -30,7 +30,6 @@ function McqOptionButton({ selectedAnswer, index, option, pressFunction }) {
   return (
     <Pressable
       onPress={() => pressFunction(index)}
-      android_ripple={{ color: COLORS.primary700 }}
       style={[styles.option, selectedAnswer === index ? styles.selectedOption : {}]}>
       <View>
         <Text>{option}</Text>

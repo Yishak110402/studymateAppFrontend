@@ -2,8 +2,8 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import { COLORS } from "../../constants/COLORS";
 import { Ionicons } from "@expo//vector-icons";
 import { useNavigation } from "@react-navigation/native";
-export default function FlashCardListItem({ flashCard }) {
-  const name = flashCard.name;
+export default function FlashCardListItem({ flashCard={name:"Name"} }) {
+  const name = flashCard.name || "Name";
   const navigation = useNavigation();
   function navigateOpenFlashCard() {
     navigation.navigate("Open FlashCard", {

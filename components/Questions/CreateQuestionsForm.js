@@ -1,8 +1,14 @@
-import { Pressable, StyleSheet } from "react-native";
+import { Alert, Keyboard, Pressable, StyleSheet } from "react-native";
 import { Text, TextInput, View } from "react-native";
 import { COLORS } from "../../constants/COLORS";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import QuestionsFileSection from "./QuestionsFileSection";
+import * as DocumentPicker from "expo-document-picker";
+import { AppContext } from "../../context/AppContext";
+import { useNavigation } from "@react-navigation/native";
 export default function CreateQuestionsForm() {
+  const { currentUser, localip, ip, setAllQuestions } = useContext(AppContext);
+  const navigation = useNavigation();
   const [invalid, setInvalid] = useState({
     name: false,
     mcqNum: false,
@@ -10,37 +16,102 @@ export default function CreateQuestionsForm() {
   });
   const [questionData, setQuestionData] = useState({
     name: "",
-    tfNum: "",
-    mcqNum: "",
+    tfNum: "15",
+    mcqNum: "15",
   });
-  const validateNameAndNums = () => {
+  async function createQuestions() {
+    Keyboard.dismiss();
+    setInvalid({
+      name: false,
+      tfNum: false,
+      mcqNum: false,
+    });
     if (
-      questionData.name === "" &&
-      questionData.tfNum === "" &&
-      questionData.mcqNum === ""
+      questionData.name === "" ||
+      questionData.tfNum === "" ||
+      questionData.mcqNum === "" ||
+      Number(questionData.tfNum) < 10 ||
+      Number(questionData.tfNum) > 30 ||
+      Number(questionData.mcqNum) < 10 ||
+      Number(questionData.mcqNum) > 30
     ) {
       if (questionData.name === "") {
+        console.log("Name is empty");
         setInvalid((prev) => ({ ...prev, name: true }));
       }
-      if (questionData.tfNum === "") {
+      if (
+        questionData.tfNum === "" ||
+        Number(questionData.tfNum) < 10 ||
+        Number(questionData.tfNum) > 30
+      ) {
+        console.log("tfnum is empty");
         setInvalid((prev) => ({ ...prev, tfNum: true }));
       }
-      if (questionData.mcqNum === "") {
+      if (
+        questionData.mcqNum === "" ||
+        Number(questionData.mcqNum) < 10 ||
+        Number(questionData.mcqNum) > 30
+      ) {
+        console.log("mcqnum is empty");
         setInvalid((prev) => ({ ...prev, mcqNum: true }));
       }
       return;
     }
-  };
+    const file = await DocumentPicker.getDocumentAsync({
+      type: "application/pdf",
+      multiple: false,
+    });
+    if (!file.assets) {
+      console.log("No File Selected");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("questionPdfFile", {
+      uri: file.assets[0].uri,
+      type: file.assets[0].mimeType,
+      name: file.assets[0].name,
+    });
+    formData.append("name", questionData.name);
+    formData.append("userId", currentUser.id);
+    formData.append("tfNum", Number(questionData.tfNum));
+    formData.append("mcqNum", Number(questionData.mcqNum));
+    console.log(formData);
+
+    console.log("Sent Request...");
+    const res = await fetch(`${localip}/generate/questions`, {
+      method: "POST",
+      body: formData,
+    });
+
+    console.log("Received");
+
+    if (!res.ok) {
+      Alert.alert("Failed", "Something Went Wrong. Try Again Later");
+      return;
+    }
+    console.log("reponse ok");
+
+    const data = await res.json();
+
+    if (data.status === "fail") {
+      Alert.alert("Failed", "Something Went Wrong. Try Again Later");
+      return;
+    }
+    if (data.status === "success") {
+      setAllQuestions((prev) => [...prev, data.data]);
+      navigation.goBack()
+    }
+  }
   return (
     <View style={styles.container}>
       <View>
         <Text style={styles.header}>Give your questions a name</Text>
         <TextInput
-          style={styles.nameInput}
+          style={[styles.nameInput, invalid.name && styles.errorInput]}
           autoCapitalize="words"
           maxLength={25}
-          onChangeText={(name) =>
-            setQuestionData((prev) => ({ ...prev, name: name }))
+          onChangeText={(text) =>
+            setQuestionData((prev) => ({ ...prev, name: text }))
           }
         />
       </View>
@@ -49,29 +120,32 @@ export default function CreateQuestionsForm() {
           Number of True/False Questions(B/n 10 and 30)
         </Text>
         <TextInput
-          style={styles.numInput}
+          style={[styles.numInput, invalid.tfNum && styles.errorInput]}
           keyboardType="number-pad"
           maxLength={2}
           onChangeText={(number) =>
             setQuestionData((prev) => ({ ...prev, tfNum: number }))
           }
+          value={questionData.tfNum}
         />
       </View>
       <View>
         <Text style={styles.subHeader}>
-          Number of True/False Questions(B/n 10 and 30)
+          Number of MC Questions(B/n 10 and 30)
         </Text>
         <TextInput
-          style={styles.numInput}
+          style={[styles.numInput, invalid.mcqNum && styles.errorInput]}
           keyboardType="number-pad"
           maxLength={2}
           onChangeText={(number) =>
             setQuestionData((prev) => ({ ...prev, mcqNum: number }))
           }
+          value={questionData.mcqNum}
         />
       </View>
       <View>
         <Pressable
+          onPress={createQuestions}
           android_ripple={{ color: COLORS.primary700 }}
           style={styles.nextBtn}>
           <View>
@@ -127,5 +201,8 @@ const styles = StyleSheet.create({
   },
   nextButtonText: {
     fontSize: 17,
+  },
+  errorInput: {
+    backgroundColor: COLORS.error,
   },
 });

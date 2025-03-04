@@ -7,9 +7,19 @@ export default function TrueFalseComponent({
   question = "Question will go here",
   indexNum,
 }) {
+  console.log(question.answer);
+  // Work on correct answer validation
   const tf = ["True", "False"];
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const handleAnswerPress = (index) => {
+    console.log(index);
+    if (selectedAnswer) {
+      return;
+    }
+    if (index === 1) {
+    }
+    if (index === 2) {
+    }
     setSelectedAnswer(index);
   };
 
@@ -21,11 +31,10 @@ export default function TrueFalseComponent({
       <View style={styles.optionsContainer}>
         {tf.map((option, index) => (
           <Pressable
-            onPress={() => handleAnswerPress(index)}
-            android_ripple={{ color: COLORS.primary700 }}
+            onPress={() => handleAnswerPress(index + 1)}
             style={[
               styles.option,
-              selectedAnswer === index && styles.selectedOption,
+              selectedAnswer === index + 1 && styles.selectedOption,
             ]}>
             <View>
               <Text>{option}</Text>
@@ -66,4 +75,10 @@ const styles = StyleSheet.create({
   selectedOption: {
     backgroundColor: "yellow",
   },
+  correctAnswer:{
+    backgroundColor:'green'
+  },
+  inCorrectAnswer:{
+    backgroundColor:COLORS.error
+  }
 });
