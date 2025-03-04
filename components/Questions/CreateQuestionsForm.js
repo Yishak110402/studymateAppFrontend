@@ -6,8 +6,10 @@ import QuestionsFileSection from "./QuestionsFileSection";
 import * as DocumentPicker from "expo-document-picker";
 import { AppContext } from "../../context/AppContext";
 import { useNavigation } from "@react-navigation/native";
+import LoadingScreen from "../LoadingScreen";
 export default function CreateQuestionsForm() {
   const { currentUser, localip, ip, setAllQuestions } = useContext(AppContext);
+  const [makingQuestions, setMakingQuestions] = useState(false);
   const navigation = useNavigation();
   const [invalid, setInvalid] = useState({
     name: false,
@@ -65,6 +67,7 @@ export default function CreateQuestionsForm() {
       console.log("No File Selected");
       return;
     }
+    setMakingQuestions(true);
     const formData = new FormData();
     formData.append("questionPdfFile", {
       uri: file.assets[0].uri,
@@ -75,9 +78,7 @@ export default function CreateQuestionsForm() {
     formData.append("userId", currentUser.id);
     formData.append("tfNum", Number(questionData.tfNum));
     formData.append("mcqNum", Number(questionData.mcqNum));
-    console.log(formData);
 
-    console.log("Sent Request...");
     const res = await fetch(`${localip}/generate/questions`, {
       method: "POST",
       body: formData,
@@ -87,6 +88,7 @@ export default function CreateQuestionsForm() {
 
     if (!res.ok) {
       Alert.alert("Failed", "Something Went Wrong. Try Again Later");
+      setMakingQuestions(false);
       return;
     }
     console.log("reponse ok");
@@ -95,15 +97,18 @@ export default function CreateQuestionsForm() {
 
     if (data.status === "fail") {
       Alert.alert("Failed", "Something Went Wrong. Try Again Later");
+      setMakingQuestions(false);
       return;
     }
     if (data.status === "success") {
       setAllQuestions((prev) => [...prev, data.data]);
-      navigation.goBack()
+      navigation.goBack();
     }
+    setMakingQuestions(false);
   }
   return (
     <View style={styles.container}>
+      {makingQuestions && <LoadingScreen text={"Generating Questions..."} />}
       <View>
         <Text style={styles.header}>Give your questions a name</Text>
         <TextInput

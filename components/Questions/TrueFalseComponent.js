@@ -6,32 +6,53 @@ import { useState } from "react";
 export default function TrueFalseComponent({
   question = "Question will go here",
   indexNum,
+  setUserTFAnswers,
+  showExplanations,
 }) {
-  console.log(question.answer);
-  // Work on correct answer validation
   const tf = ["True", "False"];
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const handleAnswerPress = (index) => {
-    console.log(index);
-    if (selectedAnswer) {
-      return;
-    }
-    if (index === 1) {
-    }
-    if (index === 2) {
-    }
+  const [correct, setCorrect] = useState(null);
+  const handleAnswerSelection = (index) => {
+    if(showExplanations) return
+    setUserTFAnswers((prevAnswers) => {
+      let isCorrect;
+      if (index === 1 && question.answer === "true") {
+        isCorrect = true;
+        setCorrect(true);
+      } else if (index === 2 && question.answer === "true") {
+        isCorrect = false;
+        setCorrect(false);
+      } else if (index === 1 && question.answer === "false") {
+        isCorrect = false;
+        setCorrect(false);
+      } else if (index === 2 && question.answer === "false") {
+        isCorrect = true;
+        setCorrect(true);
+      }
+      const updatedAnswers = [...prevAnswers];
+      updatedAnswers[indexNum] = {
+        selectedAnswer: index === 1 ? true : false,
+        isCorrect,
+      };
+      return updatedAnswers;
+    });
     setSelectedAnswer(index);
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        showExplanations && correct && styles.correctAnswer,
+        showExplanations && !correct && styles.inCorrectAnswer,
+      ]}>
       <Text style={styles.questionText}>
         {indexNum + 1}. {question.question}
       </Text>
       <View style={styles.optionsContainer}>
         {tf.map((option, index) => (
           <Pressable
-            onPress={() => handleAnswerPress(index + 1)}
+            onPress={() => handleAnswerSelection(index + 1)}
             style={[
               styles.option,
               selectedAnswer === index + 1 && styles.selectedOption,
@@ -75,10 +96,10 @@ const styles = StyleSheet.create({
   selectedOption: {
     backgroundColor: "yellow",
   },
-  correctAnswer:{
-    backgroundColor:'green'
+  correctAnswer: {
+    backgroundColor: "#9cff58",
   },
-  inCorrectAnswer:{
-    backgroundColor:COLORS.error
-  }
+  inCorrectAnswer: {
+    backgroundColor: "#ff7770",
+  },
 });

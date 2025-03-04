@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { Pressable, Text, View } from "react-native";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Alert, Pressable, Text, View } from "react-native";
 import { AppContext } from "../context/AppContext";
 import { StyleSheet } from "react-native";
 import TrueFalseComponent from "../components/Questions/TrueFalseComponent";
@@ -7,40 +7,87 @@ import { COLORS } from "../constants/COLORS";
 import { ScrollView } from "react-native";
 import MCQComponent from "../components/Questions/MCQComponent";
 import { useRoute } from "@react-navigation/native";
+import CustomModal from "../components/CustomModal";
 
 export default function OpenQuestionScreen() {
-  const { dummyQuestions } = useContext(AppContext);
+  const scrollViewRef = useRef(null);
+  const [showExplanations, setShowExplanations] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalText, setModalText] = useState("");
   const route = useRoute();
   const question = route.params.question;
-  // console.log(question);
-
   const cleanQuestion = JSON.parse(question.content);
-  const correctTFAnswers = cleanQuestion.questions.trueFalse.map((item) => item.answer);
-  // console.log(cleanQuestion);
+  const [userTFAnswers, setUserTFAnswers] = useState(
+    Array(cleanQuestion.questions.trueFalse.length).fill(null)
+  );
+  const [userMCQAnswers, setUserMCQAnswers] = useState(
+    Array(cleanQuestion.questions.multipleChoice.length).fill(null)
+  );
+  const totalQuestions =
+    cleanQuestion.questions.multipleChoice.length +
+    cleanQuestion.questions.trueFalse.length;
 
+  const checkFinalAnswers = () => {
+    if (userMCQAnswers.includes(null) || userTFAnswers.includes(null)) {
+      Alert.alert(
+        "Failed to check!!",
+        "Please answer all the questions before submitting your answers"
+      );
+      return;
+    }
+    const flatQuestionsAnswers = [...userTFAnswers, ...userMCQAnswers];
+    let total = 0;
+    for (let index = 0; index <= flatQuestionsAnswers.length - 1; index++) {
+      if (flatQuestionsAnswers[index].isCorrect) {
+        total += 1;
+      } else {
+        console.log(flatQuestionsAnswers[index]);
+      }
+    }
+    scrollViewRef.current.scrollTo({ y: 0, animated: true });
+    console.log(`You Scored ${total} out of ${totalQuestions}`);
+    setModalVisible(true);
+    setModalText(`You Scored ${total} out of ${totalQuestions}`);
+    setShowExplanations(true);
+  };
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} ref={scrollViewRef}>
       <View>
         <Text style={styles.questionsHeader}>True/False Questions</Text>
         {cleanQuestion.questions.trueFalse.map((item, index) => (
           <TrueFalseComponent
-            question={item}
             key={item.question}
+            question={item}
             indexNum={index}
+            setUserTFAnswers={setUserTFAnswers}
+            showExplanations={showExplanations}
           />
         ))}
       </View>
       <View>
         <Text style={styles.questionsHeader}>Multiple Choice Questions</Text>
         {cleanQuestion.questions.multipleChoice.map((item, index) => (
-          <MCQComponent question={item} index={index} />
+          <MCQComponent
+            question={item}
+            indexNum={index}
+            setUserMCQAnswers={setUserMCQAnswers}
+            showExplanations={showExplanations}
+          />
         ))}
-        <Pressable android_ripple={{color:COLORS.primary700}} style={styles.submitButton}>
+        <Pressable
+          android_ripple={{ color: COLORS.primary700 }}
+          style={styles.submitButton}
+          onPress={checkFinalAnswers}>
           <View>
             <Text style={styles.submitText}>Submit</Text>
           </View>
         </Pressable>
       </View>
+      <CustomModal
+        isVisible={modalVisible}
+        setIsVisible={setModalVisible}
+        text={modalText}
+      />
     </ScrollView>
   );
 }
@@ -65,11 +112,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 25,
     width: 100,
-    alignSelf:'center',
-    marginTop: 15
+    alignSelf: "center",
+    marginTop: 15,
   },
-  submitText:{
+  submitText: {
     fontSize: 15,
-    color:COLORS.primary700
-  }
+    color: COLORS.primary700,
+  },
+
 });

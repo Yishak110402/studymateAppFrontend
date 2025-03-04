@@ -47,7 +47,8 @@ function DrawerNavFlow() {
         sceneStyle: { backgroundColor: COLORS.primary700 },
         headerTitleStyle:{
           fontSize: 18
-        }
+        },
+        drawerType:'slide'
       }}>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Settings" component={SettingsScreen} />
@@ -75,7 +76,8 @@ export default function App() {
                 headerTintColor: COLORS.primary700,
                 headerTitleStyle:{
                   fontSize: 18
-                }
+                },
+                animation:'slide_from_right'
               }}
               initialRouteName={"Sign Up"}>
               <Stack.Screen name="Sign Up" component={SignUpScreen} />

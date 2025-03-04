@@ -1,4 +1,4 @@
-import { FlatList, Pressable, StyleSheet } from "react-native";
+import { Alert, FlatList, Pressable, StyleSheet } from "react-native";
 import { Text, TextInput, View } from "react-native";
 import { COLORS } from "../constants/COLORS";
 import QuestionsListItem from "../components/Questions/QuestionsListItem";
@@ -10,8 +10,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import LoadingScreen from "../components/LoadingScreen";
 
 export default function GenerateQuestions() {
-  const { ip, localip, currentUser, setAllQuestions, allQuestions } =
-    useContext(AppContext);
+  const { ip, localip, currentUser, setAllQuestions, allQuestions } = useContext(AppContext);
   const [loadingQuestions, setLoadingQuestions] = useState(false);
   const navigation = useNavigation();
   const goToCreateQuestions = () => {
@@ -24,8 +23,12 @@ export default function GenerateQuestions() {
       console.log("Loading Questions...");
 
       const res = await fetch(
-        `${localip}/generate/questions/${currentUser.id}`
+        `${ip}/generate/questions/${currentUser.id}`
       );
+      if(!res.ok || !res){
+        Alert.alert("Something Went wrong")
+        return
+      }
       const data = await res.json();
       setAllQuestions(data.data.questions);
       setLoadingQuestions(false);
@@ -38,6 +41,11 @@ export default function GenerateQuestions() {
       style={{ marginBottom: 100, flex:1}}>
       <View style={styles.container}>
         {loadingQuestions && <LoadingScreen text={"Loading Questions..."} />}
+        {allQuestions.length === 0 && (
+          <View>
+            <Text>No Questions Have Been Created</Text>
+            </View>
+        )}
         {allQuestions.length !== 0 &&
           allQuestions.map((question) => (
             <QuestionsListItem question={question} />

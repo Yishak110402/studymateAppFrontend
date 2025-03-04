@@ -489,7 +489,7 @@ export function AppProvider({ children }) {
 
   useEffect(function () {
     const testBackend = async () => {
-      const res = await fetch(`${localip}/test`);
+      const res = await fetch(`${ip}/test`);
       if (!res.ok) {
         console.log("Test failed");
         return;
