@@ -1,19 +1,27 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import FlashCardNavigationButton from "../components/FlashCards/FlashCardNavigationButton";
 import { COLORS } from "../constants/COLORS";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import DeleteButton from "../components/DeleteButton";
+import { AppContext } from "../context/AppContext";
+import LoadingScreen from "../components/LoadingScreen";
 
 export default function OpenFlashCardScreen() {
+  const {deleteFlashcard, deletingFlashCard} = useContext(AppContext)
   const route = useRoute()  
+  const flashCardID = route.params.data.id
   const flashCardData = JSON.parse(route.params.data.content).flashcards
-  const navigation = useNavigation()
+  const navigation = useNavigation()  
   
   const [pageNumber, setPageNumber] = useState(0);
   const [showQuestion, setShowQuestion] = useState(true);
   useEffect(()=>{
     navigation.setOptions({
-      title: route.params.data.name
+      title: route.params.data.name,
+      headerRight: ()=>{
+        return <DeleteButton pressFuntion={()=>deleteFlashcard(flashCardID)}/>
+      }
     })
   },[])
   function nextQuestion() {
@@ -66,6 +74,7 @@ export default function OpenFlashCardScreen() {
         </Text>
         <FlashCardNavigationButton pressFunction={nextQuestion} text={"Next"} />
       </View>
+      {deletingFlashCard && <LoadingScreen text={"Deleting Flashcard"} />}
     </View>
   );
 }

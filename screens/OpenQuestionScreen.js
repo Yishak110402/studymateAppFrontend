@@ -6,16 +6,19 @@ import TrueFalseComponent from "../components/Questions/TrueFalseComponent";
 import { COLORS } from "../constants/COLORS";
 import { ScrollView } from "react-native";
 import MCQComponent from "../components/Questions/MCQComponent";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import CustomModal from "../components/CustomModal";
+import DeleteButton from "../components/DeleteButton";
+import LoadingScreen from "../components/LoadingScreen";
 
 export default function OpenQuestionScreen() {
+  const navigation = useNavigation()
   const scrollViewRef = useRef(null);
   const [showExplanations, setShowExplanations] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalText, setModalText] = useState("");
   const route = useRoute();
-  const question = route.params.question;
+  const question = route.params.question;  
   const cleanQuestion = JSON.parse(question.content);
   const [userTFAnswers, setUserTFAnswers] = useState(
     Array(cleanQuestion.questions.trueFalse.length).fill(null)
@@ -23,6 +26,16 @@ export default function OpenQuestionScreen() {
   const [userMCQAnswers, setUserMCQAnswers] = useState(
     Array(cleanQuestion.questions.multipleChoice.length).fill(null)
   );
+  const {deletingQuestion, deleteQuestion} = useContext(AppContext)
+  
+  
+  useEffect(function () {
+    navigation.setOptions({
+      headerRight: ()=>{
+        return <DeleteButton pressFuntion={()=>deleteQuestion(question.id)} />
+      }
+    })
+  },[])
   const totalQuestions =
     cleanQuestion.questions.multipleChoice.length +
     cleanQuestion.questions.trueFalse.length;
@@ -72,6 +85,7 @@ export default function OpenQuestionScreen() {
             indexNum={index}
             setUserMCQAnswers={setUserMCQAnswers}
             showExplanations={showExplanations}
+            key={index}
           />
         ))}
         <Pressable
@@ -88,6 +102,7 @@ export default function OpenQuestionScreen() {
         setIsVisible={setModalVisible}
         text={modalText}
       />
+      {deletingQuestion && <LoadingScreen text={"Deleting Question"} />}
     </ScrollView>
   );
 }

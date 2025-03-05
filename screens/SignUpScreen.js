@@ -1,5 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
+  BackHandler,
   Button,
   Keyboard,
   Pressable,
@@ -14,6 +15,15 @@ import { AppContext } from "../context/AppContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SignUpScreen() {
+useFocusEffect(function(){
+  const onBackPress = () =>{
+    return true
+  }
+  BackHandler.addEventListener('hardwareBackPress', onBackPress)
+  return ()=>{
+    BackHandler.removeEventListener('hardwareBackPress', onBackPress)
+  }
+})
   const [showError, setShowError] = useState(false);
   const { error, signingUp, setError } = useContext(AppContext);
   const [invalid, setInvalid] = useState({

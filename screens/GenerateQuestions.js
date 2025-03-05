@@ -8,26 +8,27 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { ScrollView } from "react-native-gesture-handler";
 import LoadingScreen from "../components/LoadingScreen";
+import DeleteButton from "../components/DeleteButton";
 
 export default function GenerateQuestions() {
-  const { ip, localip, currentUser, setAllQuestions, allQuestions } = useContext(AppContext);
+  const { ip, localip, currentUser, setAllQuestions, allQuestions } =
+    useContext(AppContext);
   const [loadingQuestions, setLoadingQuestions] = useState(false);
   const navigation = useNavigation();
   const goToCreateQuestions = () => {
     navigation.navigate("Create Question");
   };
+
   useEffect(function () {
     async function getUserQuestions() {
       setLoadingQuestions(true);
       if (!currentUser) return;
       console.log("Loading Questions...");
 
-      const res = await fetch(
-        `${ip}/generate/questions/${currentUser.id}`
-      );
-      if(!res.ok || !res){
-        Alert.alert("Something Went wrong")
-        return
+      const res = await fetch(`${ip}/generate/questions/${currentUser.id}`);
+      if (!res.ok || !res) {
+        Alert.alert("Something Went wrong");
+        return;
       }
       const data = await res.json();
       setAllQuestions(data.data.questions);
@@ -38,17 +39,17 @@ export default function GenerateQuestions() {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      style={{ marginBottom: 100, flex:1}}>
+      style={{ marginBottom: 100, flex: 1 }}>
       <View style={styles.container}>
         {loadingQuestions && <LoadingScreen text={"Loading Questions..."} />}
         {allQuestions.length === 0 && (
           <View>
-            <Text>No Questions Have Been Created</Text>
-            </View>
+            <Text style={styles.noQuestionsText}>No Questions Have Been Created</Text>
+          </View>
         )}
         {allQuestions.length !== 0 &&
-          allQuestions.map((question) => (
-            <QuestionsListItem question={question} />
+          allQuestions.map((question, index) => (
+            <QuestionsListItem question={question} key={index} />
           ))}
         <View>
           <Pressable
@@ -79,5 +80,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 100,
+  },
+  noQuestionsText: {
+    color: COLORS.primary100,
+    marginTop: 10,
+    fontSize: 17,
+    marginBottom: 15
   },
 });

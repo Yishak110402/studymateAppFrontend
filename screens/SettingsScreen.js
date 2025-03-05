@@ -1,9 +1,12 @@
-import { StyleSheet, Text, View } from "react-native";
+import { useContext } from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { AppContext } from "../context/AppContext";
 
 export default function SettingsScreen(){
+    const {logOut} = useContext(AppContext)
     return(
         <View style={styles.container}>
-            <Text>This is the Settings Screen</Text>
+            <Button title="Log Out" onPress={logOut}/>
         </View>
     )
 }

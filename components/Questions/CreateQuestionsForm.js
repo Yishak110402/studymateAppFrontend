@@ -79,7 +79,7 @@ export default function CreateQuestionsForm() {
     formData.append("tfNum", Number(questionData.tfNum));
     formData.append("mcqNum", Number(questionData.mcqNum));
 
-    const res = await fetch(`${localip}/generate/questions`, {
+    const res = await fetch(`${ip}/generate/questions`, {
       method: "POST",
       body: formData,
     });
