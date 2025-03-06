@@ -9,6 +9,7 @@ import { AppContext } from "../context/AppContext";
 import { ScrollView } from "react-native-gesture-handler";
 import LoadingScreen from "../components/LoadingScreen";
 import DeleteButton from "../components/DeleteButton";
+import AddNewButton from "../components/AddNewButton";
 
 export default function GenerateQuestions() {
   const { ip, localip, currentUser, setAllQuestions, allQuestions } =
@@ -20,6 +21,11 @@ export default function GenerateQuestions() {
   };
 
   useEffect(function () {
+    navigation.setOptions({
+      headerRight:()=>{
+        return <AddNewButton pressFunction={goToCreateQuestions} />
+      }
+    })
     async function getUserQuestions() {
       setLoadingQuestions(true);
       if (!currentUser) return;
@@ -39,7 +45,7 @@ export default function GenerateQuestions() {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      style={{ marginBottom: 100, flex: 1 }}>
+      style={{ marginBottom: 0, flex: 1}}>
       <View style={styles.container}>
         {loadingQuestions && <LoadingScreen text={"Loading Questions..."} />}
         {allQuestions.length === 0 && (
@@ -52,14 +58,6 @@ export default function GenerateQuestions() {
             <QuestionsListItem question={question} key={index} />
           ))}
         <View>
-          <Pressable
-            onPress={goToCreateQuestions}
-            android_ripple={{ color: COLORS.primary700 }}
-            style={styles.addBtnContainer}>
-            <View>
-              <Ionicons name="add" size={26} color={COLORS.primary700} />
-            </View>
-          </Pressable>
         </View>
       </View>
     </ScrollView>
@@ -71,15 +69,8 @@ const styles = StyleSheet.create({
     padding: 15,
     flex: 1,
     alignItems: "center",
-  },
-  addBtnContainer: {
-    backgroundColor: COLORS.primary100,
-    padding: 5,
-    width: 40,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 100,
+    height:"100%",
+    // borderWidth: 1
   },
   noQuestionsText: {
     color: COLORS.primary100,

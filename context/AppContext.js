@@ -486,8 +486,8 @@ export function AppProvider({ children }) {
   const [signingUp, setSigningUp] = useState(false);
   const [loggingin, setLoggingIn] = useState(false);
   const [flashCardsLoading, setFlashCardsLoading] = useState(false);
-  const [deletingFlashCard, setDeletingFlashCard] = useState(false)
-  const [deletingQuestion, setDeletingQuestion] =  useState(false)
+  const [deletingFlashCard, setDeletingFlashCard] = useState(false);
+  const [deletingQuestion, setDeletingQuestion] = useState(false);
 
   useEffect(function () {
     const testBackend = async () => {
@@ -623,67 +623,67 @@ export function AppProvider({ children }) {
     navigation.navigate("Main");
   }
 
-  const logOut = async()=>{
+  const logOut = async () => {
     const currUser = await AsyncStorage.getItem("current-user");
-    if(!currUser){
-      return
+    if (!currUser) {
+      return;
     }
     await AsyncStorage.removeItem("current-user");
-    setCurrentUser({})
-    navigation.navigate("Sign Up")
-  }
+    setCurrentUser({});
+    navigation.navigate("Sign Up");
+  };
 
   const deleteFlashcard = async (id) => {
-    console.log("Delete started")
-    setDeletingFlashCard(true)
+    console.log("Delete started");
+    setDeletingFlashCard(true);
     const res = await fetch(`${ip}/generate/flashcards/${id}`, {
       method: "DELETE",
-    })
-    if(!res.ok){
-      Alert.alert("", "Failed to Delete...")
-      setDeletingFlashCard(false)
-      return
+    });
+    if (!res.ok) {
+      Alert.alert("", "Failed to Delete...");
+      setDeletingFlashCard(false);
+      return;
     }
-    const data = await res.json()
-    if(data.status === "fail"){
-      Alert.alert("", data.message)
-      setDeletingFlashCard(false)
-      return
+    const data = await res.json();
+    if (data.status === "fail") {
+      Alert.alert("", data.message);
+      setDeletingFlashCard(false);
+      return;
     }
-    setAllFlashCards((prev)=>{
-      return prev.filter((flashcard)=>{
-        return flashcard.id !== id
-      })
-    })
+    setAllFlashCards((prev) => {
+      return prev.filter((flashcard) => {
+        return flashcard.id !== id;
+      });
+    });
     // Alert.alert("", "Deleted Successfully")
-    setDeletingFlashCard(false)
-    navigation.goBack()
-  }
+    setDeletingFlashCard(false);
+    navigation.goBack();
+  };
 
-  const deleteQuestion = async(id)=>{
-    setDeletingQuestion(true)
-    const res = await fetch(`${ip}/generate/questions/${id}`,{
-      method:"DELETE"
-    })
-    if(!res.ok){
-      Alert.alert("", "Failed to Delete...")
-      setDeletingQuestion(false)
-      return 
+  const deleteQuestion = async (id) => {
+    setDeletingQuestion(true);
+    const res = await fetch(`${ip}/generate/questions/${id}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      Alert.alert("", "Failed to Delete...");
+      setDeletingQuestion(false);
+      return;
     }
-    const data = await res.json()
-    if(data.status === "fail"){
-      Alert.alert("", data.message)
-      setDeletingQuestion(false)
-      return
+    const data = await res.json();
+    if (data.status === "fail") {
+      Alert.alert("", data.message);
+      setDeletingQuestion(false);
+      return;
     }
-    setAllQuestions((prev)=>{
-      return prev.filter((question)=>{
-        return question.id !== id
-      })
-    })
-    setDeletingQuestion(false)
-    navigation.goBack()
-  }
+    setAllQuestions((prev) => {
+      return prev.filter((question) => {
+        return question.id !== id;
+      });
+    });
+    setDeletingQuestion(false);
+    navigation.goBack();
+  };
 
   const value = {
     dummyFlashCards,
@@ -708,7 +708,7 @@ export function AppProvider({ children }) {
     deleteFlashcard,
     deletingFlashCard,
     deleteQuestion,
-    deletingQuestion
+    deletingQuestion,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

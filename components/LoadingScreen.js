@@ -11,8 +11,8 @@ export default function LoadingScreen({text}){
 const styles = StyleSheet.create({
     loadingContainer:{
         width:"110%",
-        height:700,
-        justifyContent:"center",
+        height:"2100%",
+        // justifyContent:"center",
         alignItems:"center",
         position:"absolute",
         zIndex: 1000,
@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
     },
     loadingText:{
         fontSize: 28,
-        color:COLORS.primary100
+        color:COLORS.primary100,
+        marginTop: 300
     }
 
 })

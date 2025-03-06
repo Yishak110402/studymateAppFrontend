@@ -14,14 +14,22 @@ import LoadingScreen from "../components/LoadingScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../constants/COLORS";
 import { useNavigation } from "@react-navigation/native";
+import AddNewButton from "../components/AddNewButton";
 
 export default function GenerateFlashCards() {
-  const { allFlashCards, setRefresh, loadFlashCards, flashCardsLoading} =
+  const { allFlashCards, setRefresh, loadFlashCards, flashCardsLoading } =
     useContext(AppContext);
-
+  const goToCreateFlashCard = () => {
+    navigation.navigate("Create Flashcard");
+  };
   const navigation = useNavigation();
   const [currCard, setCurrCard] = useState(0);
   useEffect(function () {
+    navigation.setOptions({
+      headerRight:()=>{
+        return <AddNewButton pressFunction={goToCreateFlashCard} />
+      }
+    })
     loadFlashCards();
   }, []);
   useEffect(function () {
@@ -48,16 +56,16 @@ export default function GenerateFlashCards() {
       </View>
       <View>
         <View>
-          <Pressable
+          {/* <Pressable
             android_ripple={{ color: COLORS.primary700 }}
             style={styles.addBtnContainer}
-            onPress={() => navigation.navigate("Create Flashcard")}>
+            onPress={}>
             <View>
               <Text>
                 <Ionicons name="add" color={COLORS.primary700} size={25} />
               </Text>
             </View>
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
       {flashCardsLoading && <LoadingScreen text={"Loading Flashcards..."} />}
