@@ -10,19 +10,21 @@ export default function LoadingScreen({text}){
 }
 const styles = StyleSheet.create({
     loadingContainer:{
-        width:"110%",
+        width:"140%",
         height:"2100%",
         // justifyContent:"center",
         alignItems:"center",
         position:"absolute",
         zIndex: 1000,
         backgroundColor:"rgba(0,0,0,0.6)",
-        flex: 1
+        flex: 1,
+        left: -40,
+        top: -15
     },
     loadingText:{
-        fontSize: 28,
+        fontSize: 24,
         color:COLORS.primary100,
-        marginTop: 300
+        marginTop: 400
     }
 
 })

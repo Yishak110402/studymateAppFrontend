@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   },
   button: {
     position: "absolute",
-    bottom: -20,
+    bottom: -25,
     right: "50%",
     transform: [{ translateX: "50%" }, { translateY: "50%" }],
     backgroundColor: COLORS.primary100,

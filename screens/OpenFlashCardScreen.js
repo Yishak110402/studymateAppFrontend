@@ -8,22 +8,14 @@ import { AppContext } from "../context/AppContext";
 import LoadingScreen from "../components/LoadingScreen";
 
 export default function OpenFlashCardScreen() {
-  const {deleteFlashcard, deletingFlashCard} = useContext(AppContext)
-  const route = useRoute()  
-  const flashCardID = route.params.data.id
-  const flashCardData = JSON.parse(route.params.data.content).flashcards
-  const navigation = useNavigation()  
-  
+  const { deleteFlashcard, deletingFlashCard } = useContext(AppContext);
+  const route = useRoute();
+  const flashCardID = route.params.data.id;
+  const flashCardData = JSON.parse(route.params.data.content).flashcards;
+  const navigation = useNavigation();
+
   const [pageNumber, setPageNumber] = useState(0);
   const [showQuestion, setShowQuestion] = useState(true);
-  useLayoutEffect(()=>{
-    navigation.setOptions({
-      title: route.params.data.name,
-      headerRight: ()=>{
-        return <DeleteButton pressFuntion={()=>deleteFlashcard(flashCardID)}/>
-      }
-    })
-  },[])
   function nextQuestion() {
     if (pageNumber >= flashCardData.length - 1) {
       return;
@@ -74,6 +66,16 @@ export default function OpenFlashCardScreen() {
         </Text>
         <FlashCardNavigationButton pressFunction={nextQuestion} text={"Next"} />
       </View>
+      <Pressable
+        android_ripple={{ color: COLORS.primary500 }}
+        style={styles.deleteButtonContainer}
+        onPress={() => {
+          deleteFlashcard(flashCardID);
+        }}>
+        <View>
+          <Text style={styles.deleteButtonText}>Delete Flashcard</Text>
+        </View>
+      </Pressable>
       {deletingFlashCard && <LoadingScreen text={"Deleting Flashcard"} />}
     </View>
   );
@@ -126,4 +128,16 @@ const styles = StyleSheet.create({
   pageNum: {
     color: COLORS.primary100,
   },
+  deleteButtonContainer: {
+    backgroundColor: COLORS.error,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 25
+  },
+  deleteButtonText:{
+    fontSize: 15,
+    color: "black"
+  }
 });

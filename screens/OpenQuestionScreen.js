@@ -1,4 +1,10 @@
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { Alert, Pressable, Text, View } from "react-native";
 import { AppContext } from "../context/AppContext";
 import { StyleSheet } from "react-native";
@@ -12,13 +18,13 @@ import DeleteButton from "../components/DeleteButton";
 import LoadingScreen from "../components/LoadingScreen";
 
 export default function OpenQuestionScreen() {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const scrollViewRef = useRef(null);
   const [showExplanations, setShowExplanations] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalText, setModalText] = useState("");
   const route = useRoute();
-  const question = route.params.question;  
+  const question = route.params.question;
   const cleanQuestion = JSON.parse(question.content);
   const [userTFAnswers, setUserTFAnswers] = useState(
     Array(cleanQuestion.questions.trueFalse.length).fill(null)
@@ -26,20 +32,16 @@ export default function OpenQuestionScreen() {
   const [userMCQAnswers, setUserMCQAnswers] = useState(
     Array(cleanQuestion.questions.multipleChoice.length).fill(null)
   );
-  const {deletingQuestion, deleteQuestion} = useContext(AppContext)
-  
-  
-  useLayoutEffect(function () {
-    navigation.setOptions({
-      headerRight: ()=>{
-        return <DeleteButton pressFuntion={()=>deleteQuestion(question.id)} />
-      }
-    })
-  },[])
+  const { deletingQuestion, deleteQuestion } = useContext(AppContext);
   const totalQuestions =
     cleanQuestion.questions.multipleChoice.length +
     cleanQuestion.questions.trueFalse.length;
 
+  useLayoutEffect(function () {
+    navigation.setOptions({
+      title: question.name,
+    })
+  },[])
   const checkFinalAnswers = () => {
     if (userMCQAnswers.includes(null) || userTFAnswers.includes(null)) {
       Alert.alert(
@@ -65,6 +67,16 @@ export default function OpenQuestionScreen() {
   };
   return (
     <ScrollView style={styles.container} ref={scrollViewRef}>
+      <Pressable
+        android_ripple={{ color: COLORS.primary500 }}
+        style={styles.deleteButtonContainer}
+        onPress={() => {
+          deleteQuestion(question.id);
+        }}>
+        <View>
+          <Text style={styles.deleteButtonText}>Delete Question</Text>
+        </View>
+      </Pressable>
       <View>
         <Text style={styles.questionsHeader}>True/False Questions</Text>
         {cleanQuestion.questions.trueFalse.map((item, index) => (
@@ -134,5 +146,16 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: COLORS.primary700,
   },
-
+  deleteButtonContainer: {
+    backgroundColor: COLORS.error,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 15
+  },
+  deleteButtonText:{
+    fontSize: 15,
+    color: "black"
+  }
 });
