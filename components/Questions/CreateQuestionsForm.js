@@ -96,6 +96,7 @@ export default function CreateQuestionsForm() {
     if (data.status === "fail") {
       Alert.alert("Failed", data.message);
       setMakingQuestions(false);
+      navigation.goBack()
       return;
     }
     if (data.status === "success") {

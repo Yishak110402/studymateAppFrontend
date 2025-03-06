@@ -1,5 +1,6 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
+  Alert,
   BackHandler,
   Button,
   Keyboard,
@@ -13,6 +14,7 @@ import { COLORS } from "../constants/COLORS";
 import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import VerificationCodeModal from "../components/VerificationCodeModal";
 
 export default function SignUpScreen() {
 useFocusEffect(function(){
@@ -25,13 +27,13 @@ useFocusEffect(function(){
   }
 })
   const [showError, setShowError] = useState(false);
-  const { error, signingUp, setError } = useContext(AppContext);
+  const { error, signingUp, setError, getVerificationCode } = useContext(AppContext);
   const [invalid, setInvalid] = useState({
     name: false,
     email: false,
     pwd: false,
   });
-  const { signUp } = useContext(AppContext);
+  const { signUp, verificationModalVisible, verificationCode } = useContext(AppContext);
   const [signUpData, setSignUpData] = useState({
     name: "",
     email: "",
@@ -63,7 +65,7 @@ useFocusEffect(function(){
     setError("")
     navigation.navigate("Log In");
   }
-  function handleSignUpAndNavigation() {
+  async function handleSignUpAndNavigation() {
     Keyboard.dismiss();
     if(signingUp) return
     setInvalid({
@@ -90,8 +92,8 @@ useFocusEffect(function(){
     const name = signUpData.name;
     const email = signUpData.email;
     const pwd = signUpData.pwd;
-
-    signUp(name, email, pwd);
+    getVerificationCode(email)
+    // signUp(name, email, pwd);
   }
   return (
     <View style={styles.container}>
@@ -152,10 +154,15 @@ useFocusEffect(function(){
       <View>
         <Pressable
           android_ripple={{ color: COLORS.primary700 }}
-          style={[styles.btnContainer, signingUp && {opacity: 0.5, minWidth:130}]}
+          style={[
+            styles.btnContainer,
+            signingUp && { opacity: 0.5, minWidth: 130 },
+          ]}
           onPress={handleSignUpAndNavigation}>
           <View>
-            <Text style={styles.btnText}>{!signingUp ?"Sign Up": "Signing Up..."}</Text>
+            <Text style={styles.btnText}>
+              {!signingUp ? "Sign Up" : "Signing Up..."}
+            </Text>
           </View>
         </Pressable>
         <View>
@@ -171,6 +178,12 @@ useFocusEffect(function(){
           <Text style={styles.errorText}>{error}</Text>
         </View>
       )}
+      <VerificationCodeModal
+        visible={verificationModalVisible}
+        pressFunction={signUp}
+        signUpData={signUpData}
+        
+      />
     </View>
   );
 }

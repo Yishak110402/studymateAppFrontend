@@ -46,7 +46,7 @@ export default function FlashCardFileSection({ setLoading, name }) {
 
     if (data.status === "fail") {
       Alert.alert("Error", data.message);
-      navigation.navigate("Generate Flashcards");
+      navigation.goBack()
       setLoading(false);
       return;
     }

@@ -488,6 +488,9 @@ export function AppProvider({ children }) {
   const [flashCardsLoading, setFlashCardsLoading] = useState(false);
   const [deletingFlashCard, setDeletingFlashCard] = useState(false);
   const [deletingQuestion, setDeletingQuestion] = useState(false);
+  const [verificationCode, setVerificationCode] = useState(null);
+  const [verificationModalVisible, setVerificationModalVisible] =
+    useState(false);
 
   const verifyUser = async () => {
     console.log("Started Verification...");
@@ -522,6 +525,31 @@ export function AppProvider({ children }) {
       navigation.navigate("Main");
     }
     console.log("Verification Ended");
+  };
+
+  const getVerificationCode = async (email) => {
+    const res = await fetch(`${ip}/auth/verificationemail`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    });
+    const data = await res.json();
+    if (data.status === "fail") {
+      Alert.alert("Error", data.message);
+      return;
+    }
+    console.log(data.verificationCode);
+    
+
+    await AsyncStorage.setItem(
+      "verification",
+      JSON.stringify(data.verificationCode)
+    );
+    setVerificationModalVisible(true);
   };
 
   const loadFlashCards = async () => {
@@ -728,6 +756,10 @@ export function AppProvider({ children }) {
     deleteQuestion,
     deletingQuestion,
     verifyUser,
+    verificationCode,
+    getVerificationCode,
+    verificationModalVisible,
+    setVerificationModalVisible,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
