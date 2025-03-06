@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Alert, Pressable, Text, View } from "react-native";
 import { AppContext } from "../context/AppContext";
 import { StyleSheet } from "react-native";
@@ -29,7 +29,7 @@ export default function OpenQuestionScreen() {
   const {deletingQuestion, deleteQuestion} = useContext(AppContext)
   
   
-  useEffect(function () {
+  useLayoutEffect(function () {
     navigation.setOptions({
       headerRight: ()=>{
         return <DeleteButton pressFuntion={()=>deleteQuestion(question.id)} />
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingHorizontal: 10,
     flex: 1,
-    marginBottom: 135,
+    marginBottom: 95,
   },
   questionsHeader: {
     fontSize: 17,

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import FlashCardNavigationButton from "../components/FlashCards/FlashCardNavigationButton";
 import { COLORS } from "../constants/COLORS";
@@ -16,7 +16,7 @@ export default function OpenFlashCardScreen() {
   
   const [pageNumber, setPageNumber] = useState(0);
   const [showQuestion, setShowQuestion] = useState(true);
-  useEffect(()=>{
+  useLayoutEffect(()=>{
     navigation.setOptions({
       title: route.params.data.name,
       headerRight: ()=>{

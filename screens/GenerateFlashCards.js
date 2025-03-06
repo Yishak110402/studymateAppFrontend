@@ -24,12 +24,7 @@ export default function GenerateFlashCards() {
   };
   const navigation = useNavigation();
   const [currCard, setCurrCard] = useState(0);
-  useEffect(function () {
-    navigation.setOptions({
-      headerRight:()=>{
-        return <AddNewButton pressFunction={goToCreateFlashCard} />
-      }
-    })
+  useLayoutEffect(function () {
     loadFlashCards();
   }, []);
   useEffect(function () {
@@ -55,17 +50,12 @@ export default function GenerateFlashCards() {
         />
       </View>
       <View>
-        <View>
-          {/* <Pressable
-            android_ripple={{ color: COLORS.primary700 }}
-            style={styles.addBtnContainer}
-            onPress={}>
-            <View>
-              <Text>
-                <Ionicons name="add" color={COLORS.primary700} size={25} />
-              </Text>
-            </View>
-          </Pressable> */}
+        <View style={styles.button}>
+          <Pressable
+            android_ripple={{ color: COLORS.primary300 }}
+            onPress={goToCreateFlashCard}>
+            <Ionicons name="add-circle" size={50} color={COLORS.primary700} />
+          </Pressable>
         </View>
       </View>
       {flashCardsLoading && <LoadingScreen text={"Loading Flashcards..."} />}
@@ -90,5 +80,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     marginVertical: 20,
+  },
+  button: {
+    position: "absolute",
+    bottom: -20,
+    right: "50%",
+    transform: [{ translateX: "50%" }, { translateY: "50%" }],
+    backgroundColor: COLORS.primary100,
+    borderRadius: 50,
   },
 });

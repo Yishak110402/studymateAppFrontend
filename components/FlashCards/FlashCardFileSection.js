@@ -4,17 +4,18 @@ import { COLORS } from "../../constants/COLORS";
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function FlashCardFileSection({ setLoading, name }) {
-  const { ip, currentUser, setAllFlashCards, localip } = useContext(AppContext);
+  const { ip, currentUser, setCurrentUser, setAllFlashCards, localip } =
+    useContext(AppContext);
   const navigation = useNavigation();
   async function getFile() {
-    console.log(currentUser.id);    
     const file = await DocumentPicker.getDocumentAsync({
       type: "application/pdf",
       multiple: false,
-    });    
-   
+    });
+
     if (!file.assets[0].uri) {
       console.log("No File Selected");
       return;
@@ -39,19 +40,30 @@ export default function FlashCardFileSection({ setLoading, name }) {
     if (!res.ok) {
       Alert.alert("Something went wrong. Try Again Later");
       setLoading(false);
-      return
+      return;
     }
     const data = await res.json();
-    
-    if(data.status === "fail"){
-      Alert.alert(data.message);
+
+    if (data.status === "fail") {
+      Alert.alert("Error", data.message);
+      navigation.navigate("Generate Flashcards");
       setLoading(false);
-      return
+      return;
     }
-    console.log("Generation Completed");    
+    const user = await AsyncStorage.getItem("current-user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      const updatedUser = {
+        ...parsedUser,
+        flashcardsBalance: data.newFlashcardsBalance,
+      };
+      setCurrentUser(updatedUser);
+      await AsyncStorage.setItem("current-user", JSON.stringify(updatedUser));
+    }
+    console.log("Generation Completed");
     setLoading(false);
-    setAllFlashCards((prev)=>[...prev, data.message])    
-    navigation.goBack()
+    setAllFlashCards((prev) => [...prev, data.message]);
+    navigation.goBack();
   }
   return (
     <View style={styles.container}>

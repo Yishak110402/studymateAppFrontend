@@ -4,10 +4,7 @@ import { COLORS } from "../../constants/COLORS";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 export default function QuestionsListItem({ question = "Name of question"}) {
-  // console.log(question.content);
-  const questionsList = JSON.parse(question.content);
-  console.log(questionsList);
-  
+  const questionsList = JSON.parse(question.content); 
   
     const navigation = useNavigation()
     const press = ()=>{

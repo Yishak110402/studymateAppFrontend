@@ -19,6 +19,8 @@ import OpenFlashCardScreen from "./screens/OpenFlashCardScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import OpenQuestionScreen from "./screens/OpenQuestionScreen";
 import CreateQuestionsForm from "./components/Questions/CreateQuestionsForm";
+import UserBalanceDetails from "./components/UserBalanceDetails";
+import MainLoadingScreen from "./screens/MainLoadingScreen";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -48,7 +50,10 @@ function DrawerNavFlow() {
         headerTitleStyle:{
           fontSize: 18
         },
-        drawerType:'slide'
+        drawerType:'slide',
+        headerRight:()=>{
+          return <UserBalanceDetails />
+        }
       }}>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Settings" component={SettingsScreen} />
@@ -61,7 +66,7 @@ export default function App() {
   return (
     <>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <StatusBar style="dark" translucent />
+        <StatusBar style="inverted" translucent />
         <NavigationContainer>
           <AppProvider>
             <Stack.Navigator
@@ -79,7 +84,8 @@ export default function App() {
                 },
                 animation:'slide_from_right'
               }}
-              initialRouteName={"Sign Up"}>
+              initialRouteName={"Main Loading"}>
+              <Stack.Screen name="Main Loading" component={MainLoadingScreen} />
               <Stack.Screen name="Sign Up" component={SignUpScreen} />
               <Stack.Screen name="Log In" component={LoginScreen} />
               <Stack.Screen name="Main" component={DrawerNavFlow} />

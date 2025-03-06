@@ -7,8 +7,9 @@ import * as DocumentPicker from "expo-document-picker";
 import { AppContext } from "../../context/AppContext";
 import { useNavigation } from "@react-navigation/native";
 import LoadingScreen from "../LoadingScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function CreateQuestionsForm() {
-  const { currentUser, localip, ip, setAllQuestions } = useContext(AppContext);
+  const { currentUser, localip, ip, setAllQuestions, setCurrentUser } = useContext(AppContext);
   const [makingQuestions, setMakingQuestions] = useState(false);
   const navigation = useNavigation();
   const [invalid, setInvalid] = useState({
@@ -38,7 +39,6 @@ export default function CreateQuestionsForm() {
       Number(questionData.mcqNum) > 30
     ) {
       if (questionData.name === "") {
-        console.log("Name is empty");
         setInvalid((prev) => ({ ...prev, name: true }));
       }
       if (
@@ -46,7 +46,6 @@ export default function CreateQuestionsForm() {
         Number(questionData.tfNum) < 10 ||
         Number(questionData.tfNum) > 30
       ) {
-        console.log("tfnum is empty");
         setInvalid((prev) => ({ ...prev, tfNum: true }));
       }
       if (
@@ -54,7 +53,6 @@ export default function CreateQuestionsForm() {
         Number(questionData.mcqNum) < 10 ||
         Number(questionData.mcqNum) > 30
       ) {
-        console.log("mcqnum is empty");
         setInvalid((prev) => ({ ...prev, mcqNum: true }));
       }
       return;
@@ -96,11 +94,17 @@ export default function CreateQuestionsForm() {
     const data = await res.json();
 
     if (data.status === "fail") {
-      Alert.alert("Failed", "Something Went Wrong. Try Again Later");
+      Alert.alert("Failed", data.message);
       setMakingQuestions(false);
       return;
     }
     if (data.status === "success") {
+      const user = await AsyncStorage.getItem("current-user");
+      const parsedUser = JSON.parse(user)
+      const updatedUser = {...parsedUser, questionsBalance: data.newQuestionsBalance}
+      await AsyncStorage.setItem("current-user", JSON.stringify(updatedUser))
+      setCurrentUser(updatedUser);
+      console.log(data.newQuestionsBalance);      
       setAllQuestions((prev) => [...prev, data.data]);
       navigation.goBack();
     }

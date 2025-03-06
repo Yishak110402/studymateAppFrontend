@@ -489,21 +489,40 @@ export function AppProvider({ children }) {
   const [deletingFlashCard, setDeletingFlashCard] = useState(false);
   const [deletingQuestion, setDeletingQuestion] = useState(false);
 
-  useEffect(function () {
-    const testBackend = async () => {
-      const res = await fetch(`${ip}/test`);
-      if (!res.ok) {
-        console.log("Test failed");
-        return;
-      }
-      const data = await res.json();
-      if (data.status !== "success") {
-        console.log("Test Failed");
-      }
-      console.log("Test Success");
-    };
-    testBackend();
-  }, []);
+  const verifyUser = async () => {
+    console.log("Started Verification...");
+    const savedUser = await AsyncStorage.getItem("current-user");
+    if (!savedUser) {
+      navigation.navigate("Sign Up");
+      return;
+    }
+    const parsedUser = JSON.parse(savedUser);
+    const res = await fetch(`${ip}/auth/verify`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: parsedUser.email,
+        password: parsedUser.pwd,
+      }),
+    });
+    if (!res.ok) {
+      Alert.alert("Error", "Something Went Wrong. Try again later");
+      return;
+    }
+    const data = await res.json();
+    if (data.status === "fail") {
+      await AsyncStorage.removeItem("current-user");
+      navigation.navigate("Sign Up");
+      return;
+    } else if (data.status === "success") {
+      setCurrentUser(data.data);
+      await AsyncStorage.setItem("current-user", JSON.stringify(data.data));
+      navigation.navigate("Main");
+    }
+    console.log("Verification Ended");
+  };
 
   const loadFlashCards = async () => {
     setFlashCardsLoading(true);
@@ -568,13 +587,12 @@ export function AppProvider({ children }) {
     const data = await res.json();
     if (data.status === "fail") {
       setError(data.message);
-      console.log(data.message);
       setSigningUp(false);
       return;
     }
     setError("");
     await AsyncStorage.setItem("current-user", JSON.stringify(data.message[0]));
-    setCurrentUser(data.data);
+    setCurrentUser(data.message[0]);
     navigation.navigate("Main");
     console.log("Account Created");
     setSigningUp(false);
@@ -611,11 +629,10 @@ export function AppProvider({ children }) {
     if (data.status === "fail") {
       setLoggingIn(false);
       setError(data.message);
-      console.log(data.message);
       return;
     }
-    console.log(data.data.id);
     setError("");
+
     setCurrentUser(data.data);
     await AsyncStorage.setItem("current-user", JSON.stringify(data.data));
     console.log("Logged In Successfully");
@@ -701,6 +718,7 @@ export function AppProvider({ children }) {
     allQuestions,
     setAllQuestions,
     currentUser,
+    setCurrentUser,
     setRefresh,
     loadFlashCards,
     flashCardsLoading,
@@ -709,6 +727,7 @@ export function AppProvider({ children }) {
     deletingFlashCard,
     deleteQuestion,
     deletingQuestion,
+    verifyUser,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

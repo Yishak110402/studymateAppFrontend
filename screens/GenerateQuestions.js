@@ -1,10 +1,10 @@
-import { Alert, FlatList, Pressable, StyleSheet } from "react-native";
+import { Alert, Button, FlatList, Pressable, StyleSheet } from "react-native";
 import { Text, TextInput, View } from "react-native";
 import { COLORS } from "../constants/COLORS";
 import QuestionsListItem from "../components/Questions/QuestionsListItem";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { ScrollView } from "react-native-gesture-handler";
 import LoadingScreen from "../components/LoadingScreen";
@@ -20,12 +20,7 @@ export default function GenerateQuestions() {
     navigation.navigate("Create Question");
   };
 
-  useEffect(function () {
-    navigation.setOptions({
-      headerRight:()=>{
-        return <AddNewButton pressFunction={goToCreateQuestions} />
-      }
-    })
+  useLayoutEffect(function () {
     async function getUserQuestions() {
       setLoadingQuestions(true);
       if (!currentUser) return;
@@ -45,20 +40,26 @@ export default function GenerateQuestions() {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      style={{ marginBottom: 0, flex: 1}}>
+      style={{ marginBottom: 0, flex: 1 }}>
       <View style={styles.container}>
         {loadingQuestions && <LoadingScreen text={"Loading Questions..."} />}
         {allQuestions.length === 0 && (
           <View>
-            <Text style={styles.noQuestionsText}>No Questions Have Been Created</Text>
+            <Text style={styles.noQuestionsText}>
+              No Questions Have Been Created
+            </Text>
           </View>
         )}
         {allQuestions.length !== 0 &&
           allQuestions.map((question, index) => (
             <QuestionsListItem question={question} key={index} />
           ))}
-        <View>
-        </View>
+        <View></View>
+      </View>
+      <View style={styles.button}>
+        <Pressable android_ripple={{color:COLORS.primary300}} onPress={goToCreateQuestions}>
+          <Ionicons name="add-circle" size={50} color={COLORS.primary700} />
+        </Pressable>
       </View>
     </ScrollView>
   );
@@ -69,13 +70,21 @@ const styles = StyleSheet.create({
     padding: 15,
     flex: 1,
     alignItems: "center",
-    height:"100%",
+    minHeight: "100%",
     // borderWidth: 1
   },
   noQuestionsText: {
     color: COLORS.primary100,
     marginTop: 10,
     fontSize: 17,
-    marginBottom: 15
+    marginBottom: 15,
+  },
+  button: {
+    position: "absolute",
+    bottom: -15,
+    right: "50%",
+    transform: [{ translateX: "50%" }, { translateY: "50%" }],
+    backgroundColor: COLORS.primary100,
+    borderRadius: 50,
   },
 });
