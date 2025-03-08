@@ -1,10 +1,44 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Keyboard, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { COLORS } from "../constants/COLORS";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AppContext } from "../context/AppContext";
 
 export default function BuyCreditsScreen() {
-  const [flashcardsNum, setFlashcardsNum] = useState("");
-  const [questionsNum, setQuestionsNum] = useState("");
+  const [flashcardsNum, setFlashcardsNum] = useState("0");
+  const [questionsNum, setQuestionsNum] = useState("0");
+  const {currentUser, localip, ip} = useContext(AppContext)
+  const createOrder = async()=>{
+    console.log("Creating order")
+    Keyboard.dismiss()
+    const totalAmount = Number(flashcardsNum) * 15 + Number(questionsNum) * 15
+    if(totalAmount < 100){
+        Alert.alert("Minimum purchase amount is 100 Birr.")
+        return
+    }
+    const order = {
+        createdBy: currentUser.id,
+        orderTotalAmount: totalAmount,
+        numFlashcards: Number(flashcardsNum),
+        numQuestions: Number(questionsNum) 
+    }
+    const res = await fetch(`${localip}/order`,{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify(order)
+    })
+    const data = await res.json()
+    console.log(data);
+    
+    if(data.status === "fail"){
+        Alert.alert(data.message)
+        return
+    }
+    Alert.alert("Purchase Successfull",`Your order number is ${data.data.id}. Please keep this number because you won't see it again.`)
+    
+  }
+  
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Buy Credits</Text>
@@ -33,6 +67,7 @@ export default function BuyCreditsScreen() {
           Total Price: {Number(flashcardsNum) * 15 + Number(questionsNum) * 15} Birr
         </Text>
         <Pressable
+        onPress={createOrder}
           android_ripple={{ color: COLORS.primary700 }}
           style={styles.placeOrderButton}>
           <View>
@@ -119,7 +154,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary100,
     marginTop: 20,
     paddingVertical: 15,
-    paddingHorizontal: 5,
+    paddingHorizontal: 8,
     borderRadius: 10,
   },
   stepsHeader: {
@@ -128,7 +163,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   step: {
-    fontSize: 15,
+    fontSize: 14,
     marginBottom: 7,
   },
   phoneNumber: {
