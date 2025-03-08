@@ -484,7 +484,7 @@ export function AppProvider({ children }) {
   const [currentUser, setCurrentUser] = useState({});
   const [refresh, setRefresh] = useState(0);
   const [signingUp, setSigningUp] = useState(false);
-  const [loggingin, setLoggingIn] = useState(false);
+  const [loggingIn, setLoggingIn] = useState(false);
   const [flashCardsLoading, setFlashCardsLoading] = useState(false);
   const [deletingFlashCard, setDeletingFlashCard] = useState(false);
   const [deletingQuestion, setDeletingQuestion] = useState(false);
@@ -528,6 +528,7 @@ export function AppProvider({ children }) {
   };
 
   const getVerificationCode = async (email) => {
+    setSigningUp(true);
     const res = await fetch(`${ip}/auth/verificationemail`, {
       method: "POST",
       headers: {
@@ -540,16 +541,16 @@ export function AppProvider({ children }) {
     const data = await res.json();
     if (data.status === "fail") {
       Alert.alert("Error", data.message);
+      setSigningUp(false);
       return;
     }
     console.log(data.verificationCode);
-    
-
     await AsyncStorage.setItem(
       "verification",
       JSON.stringify(data.verificationCode)
     );
     setVerificationModalVisible(true);
+    setSigningUp(false)
   };
 
   const loadFlashCards = async () => {
@@ -660,10 +661,8 @@ export function AppProvider({ children }) {
       return;
     }
     setError("");
-
     setCurrentUser(data.data);
     await AsyncStorage.setItem("current-user", JSON.stringify(data.data));
-    console.log("Logged In Successfully");
     setLoggingIn(false);
     navigation.navigate("Main");
   }
@@ -736,7 +735,7 @@ export function AppProvider({ children }) {
     signUp,
     signingUp,
     logIn,
-    loggingin,
+    loggingIn,
     error,
     setError,
     ip,

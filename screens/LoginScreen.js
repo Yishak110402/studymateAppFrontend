@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import { COLORS } from "../constants/COLORS";
-import { useContext, useLayoutEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 
 export default function LoginScreen() {
@@ -26,6 +26,7 @@ export default function LoginScreen() {
 
   useLayoutEffect(function(){
     if(error === ""){
+      setShowError(false)
       return
     }
     setShowError(true)
@@ -37,6 +38,7 @@ export default function LoginScreen() {
   }
 
   function handleLogin() {
+    setError("")
     setInvalid({
       email: false,
       pwd: false,
@@ -55,6 +57,12 @@ export default function LoginScreen() {
     logIn(email, pwd);
     console.log(error);
   }
+
+  useEffect(function(){
+    console.log(loggingIn);
+    
+  },[loggingIn])
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -100,9 +108,9 @@ export default function LoginScreen() {
         <Pressable
           onPress={handleLogin}
           android_ripple={{ color: COLORS.primary700 }}
-          style={styles.btnContainer}>
+          style={[styles.btnContainer, loggingIn && {opacity: 0.5, minWidth: 130}]}>
           <View>
-            <Text style={[styles.btnText, loggingIn && {opacity: 0.5, minWidth: 130}]}>{!loggingIn ?"Log In": "Logging In..."}</Text>
+            <Text style={[styles.btnText]}>{!loggingIn ?"Log In": "Logging In..."}</Text>
           </View>
         </Pressable>
         <View>
