@@ -27,7 +27,7 @@ export default function BuyCreditsScreen() {
         numFlashcards: Number(flashcardsNum),
         numQuestions: Number(questionsNum) 
     }
-    const res = await fetch(`${localip}/order`,{
+    const res = await fetch(`${ip}/order`,{
         method:"POST",
         headers:{
             "Content-Type":"application/json"

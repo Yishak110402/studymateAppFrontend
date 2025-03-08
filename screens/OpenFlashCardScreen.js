@@ -16,6 +16,11 @@ export default function OpenFlashCardScreen() {
 
   const [pageNumber, setPageNumber] = useState(0);
   const [showQuestion, setShowQuestion] = useState(true);
+  useEffect(function(){
+    navigation.setOptions({
+      title: route.params.data.name
+    })
+  },[])
   function nextQuestion() {
     if (pageNumber >= flashCardData.length - 1) {
       return;
