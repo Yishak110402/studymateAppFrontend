@@ -21,6 +21,7 @@ import OpenQuestionScreen from "./screens/OpenQuestionScreen";
 import CreateQuestionsForm from "./components/Questions/CreateQuestionsForm";
 import UserBalanceDetails from "./components/UserBalanceDetails";
 import MainLoadingScreen from "./screens/MainLoadingScreen";
+import BuyCreditsScreen from "./screens/BuyCreditsScreen";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -53,10 +54,11 @@ function DrawerNavFlow() {
         drawerType:'slide',
         headerRight:()=>{
           return <UserBalanceDetails />
-        }
+        },
       }}>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Settings" component={SettingsScreen} />
+      <Drawer.Screen name="Buy Credits" component={BuyCreditsScreen} />
       <Drawer.Screen name="Saved Flashcards" component={SavedFlashCards} />
     </Drawer.Navigator>
   );
