@@ -2,17 +2,23 @@ import { Alert, Keyboard, Pressable, StyleSheet, Text, TextInput, View } from "r
 import { COLORS } from "../constants/COLORS";
 import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
+import LoadingScreen from "../components/LoadingScreen";
+import { useNavigation } from "@react-navigation/native";
 
 export default function BuyCreditsScreen() {
   const [flashcardsNum, setFlashcardsNum] = useState("0");
   const [questionsNum, setQuestionsNum] = useState("0");
   const {currentUser, localip, ip} = useContext(AppContext)
+  const [ordering, setOrdering] = useState(false)
+  const navigation = useNavigation()
   const createOrder = async()=>{
+    setOrdering(true)
     console.log("Creating order")
     Keyboard.dismiss()
     const totalAmount = Number(flashcardsNum) * 15 + Number(questionsNum) * 15
     if(totalAmount < 100){
         Alert.alert("Minimum purchase amount is 100 Birr.")
+        setOrdering(false)
         return
     }
     const order = {
@@ -28,15 +34,22 @@ export default function BuyCreditsScreen() {
         },
         body:JSON.stringify(order)
     })
+    if(!res.ok){
+        Alert.alert("Something went wrong. Please try again.")
+        setOrdering(false)
+        return
+    }
     const data = await res.json()
     console.log(data);
     
     if(data.status === "fail"){
         Alert.alert(data.message)
+        setOrdering(false)
         return
     }
-    Alert.alert("Purchase Successfull",`Your order number is ${data.data.id}. Please keep this number because you won't see it again.`)
-    
+    Alert.alert("Purchase Successfull!!!",`Your order number is ${data.data.id}. Please keep this number because you won't see it again.`)
+    setOrdering(false)    
+    navigation.navigate("Main")
   }
   
   return (
@@ -99,6 +112,7 @@ export default function BuyCreditsScreen() {
           </Text>
         </View>
       </View>
+      {ordering && <LoadingScreen text={"Ordering..."} />}
     </View>
   );
 }
