@@ -2,9 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Pressable, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../constants/COLORS";
 
-export default function AddNewButton({pressFunction}){
-    const pressed = ()=> console.log("pressed");
-    
+export default function AddNewButton({pressFunction}){    
     return(
         <TouchableOpacity style={{ padding: 10, }} onPress={pressFunction}>
             <View>

@@ -12,19 +12,13 @@ export default function VerificationCodeModal({
 }) {
   const [input, setInput] = useState("");
   async function handleVerification() {
-    console.log("here");    
     Keyboard.dismiss();
-    const code = await AsyncStorage.getItem("verification");
-    console.log(code);
-    
+    const code = await AsyncStorage.getItem("verification");    
     if (!code) {
       console.log("No verification code found");
       return;
     }
     const parsedCode = JSON.parse(code);
-    console.log("Parsed",parsedCode);
-    console.log(Number(input) === parsedCode);
-    console.log(verificationCode);
     if (input.length !== 6) return;
     if (Number(input) !== parsedCode) {
       Alert.alert("Verification Failed", "Incorrect Verification Code entered");

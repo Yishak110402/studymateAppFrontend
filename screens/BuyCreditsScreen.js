@@ -39,9 +39,7 @@ export default function BuyCreditsScreen() {
         setOrdering(false)
         return
     }
-    const data = await res.json()
-    console.log(data);
-    
+    const data = await res.json()    
     if(data.status === "fail"){
         Alert.alert(data.message)
         setOrdering(false)

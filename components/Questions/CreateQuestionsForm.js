@@ -105,7 +105,6 @@ export default function CreateQuestionsForm() {
       const updatedUser = {...parsedUser, questionsBalance: data.newQuestionsBalance}
       await AsyncStorage.setItem("current-user", JSON.stringify(updatedUser))
       setCurrentUser(updatedUser);
-      console.log(data.newQuestionsBalance);      
       setAllQuestions((prev) => [...prev, data.data]);
       navigation.goBack();
     }
