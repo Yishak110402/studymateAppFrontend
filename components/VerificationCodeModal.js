@@ -1,16 +1,20 @@
 import { Alert, Keyboard, Pressable, StyleSheet } from "react-native";
 import { Modal, Text, TextInput, View } from "react-native";
 import { COLORS } from "../constants/COLORS";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AppContext } from "../context/AppContext";
 
 export default function VerificationCodeModal({
   visible,
   pressFunction,
   signUpData,
-  verificationCode,
 }) {
   const [input, setInput] = useState("");
+  const {setVerificationModalVisible} = useContext(AppContext)
+  const closeModal = ()=>{
+    setVerificationModalVisible(false)
+  }
   async function handleVerification() {
     Keyboard.dismiss();
     const code = await AsyncStorage.getItem("verification");    
@@ -19,13 +23,16 @@ export default function VerificationCodeModal({
       return;
     }
     const parsedCode = JSON.parse(code);
-    if (input.length !== 6) return;
+    console.log(parsedCode);
+    
+    if (input.length !== 6){
+      return
+    };
     if (Number(input) !== parsedCode) {
       Alert.alert("Verification Failed", "Incorrect Verification Code entered");
       return;
     }
-    console.log("Signing Up...");
-
+    setVerificationModalVisible(false)
     pressFunction(signUpData.name, signUpData.email, signUpData.pwd);
   }
   useEffect(
@@ -44,6 +51,11 @@ export default function VerificationCodeModal({
       style={styles.container}
       visible={visible}>
       <View style={styles.container}>
+        <Pressable onPress={closeModal} android_ripple={{color:COLORS.primary100}} style={styles.closeButton}>
+          <View>
+            <Text style={styles.closeButtonText}>X</Text>
+          </View>
+        </Pressable>
         <View style={styles.innerContainer}>
           <Text style={styles.verificationText}>
             Please enter the verification code we sent to your email.
@@ -122,4 +134,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
   },
+  closeButton:{
+    position:'absolute',
+    top:250,
+    right: 20,
+    backgroundColor:COLORS.primary700,
+    padding:5,
+    borderRadius:50,
+    zIndex: 100000,
+    width:50,
+    height: 50,
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  closeButtonText:{
+    color:COLORS.primary300,
+    fontSize: 20
+  }
 });

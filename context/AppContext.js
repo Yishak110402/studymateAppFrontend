@@ -490,7 +490,7 @@ export function AppProvider({ children }) {
   const [deletingQuestion, setDeletingQuestion] = useState(false);
   const [verificationCode, setVerificationCode] = useState(null);
   const [verificationModalVisible, setVerificationModalVisible] =
-    useState(false);
+    useState(true);
 
   const verifyUser = async () => {
     console.log("Started Verification...");
@@ -550,7 +550,7 @@ export function AppProvider({ children }) {
       JSON.stringify(data.verificationCode)
     );
     setVerificationModalVisible(true);
-    setSigningUp(false)
+    // setSigningUp(false)
   };
 
   const loadFlashCards = async () => {

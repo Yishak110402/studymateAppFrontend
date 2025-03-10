@@ -36,6 +36,7 @@ useFocusEffect(function(){
   const { signUp, verificationModalVisible, verificationCode } = useContext(AppContext);
   const [signUpData, setSignUpData] = useState({
     name: "",
+    
     email: "",
     pwd: "",
   });
