@@ -22,6 +22,7 @@ import UserBalanceDetails from "./components/UserBalanceDetails";
 import MainLoadingScreen from "./screens/MainLoadingScreen";
 import BuyCreditsScreen from "./screens/BuyCreditsScreen";
 import Summaries from "./screens/CreateSummary";
+import OpenSummary from "./screens/OpenSummary";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -120,6 +121,7 @@ export default function App() {
               />
               <Stack.Screen name="Open Question" component={OpenQuestionScreen} options={{headerShown: true}} />
               <Stack.Screen name="Create Question" component={CreateQuestionsForm} options={{headerShown: true}} />
+              <Stack.Screen name = "Open Summary" component={OpenSummary} options={{headerShown: true}} />
             </Stack.Navigator>
           </AppProvider>
         </NavigationContainer>
