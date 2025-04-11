@@ -12,7 +12,6 @@ import { COLORS, COLORS2 } from "./constants/COLORS";
 import { StatusBar } from "expo-status-bar";
 import GenerateFlashCards from "./screens/GenerateFlashCards";
 import GenerateQuestions from "./screens/GenerateQuestions";
-import CreateSummary from "./screens/CreateSummary";
 import { AppProvider } from "./context/AppContext";
 import NewFlashCardFormPage from "./components/FlashCards/NewFlashCardFormPage";
 import OpenFlashCardScreen from "./screens/OpenFlashCardScreen";
@@ -22,6 +21,7 @@ import CreateQuestionsForm from "./components/Questions/CreateQuestionsForm";
 import UserBalanceDetails from "./components/UserBalanceDetails";
 import MainLoadingScreen from "./screens/MainLoadingScreen";
 import BuyCreditsScreen from "./screens/BuyCreditsScreen";
+import Summaries from "./screens/CreateSummary";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -82,9 +82,11 @@ export default function App() {
                 },
                 headerTintColor: COLORS.primary700,
                 headerTitleStyle:{
-                  fontSize: 18
+                  fontSize: 16
                 },
-                animation:'slide_from_right'
+                animation:'slide_from_right',
+                headerBlurEffect: 'systemChromeMaterial'
+        
               }}
               initialRouteName={"Main Loading"}>
               <Stack.Screen name="Main Loading" component={MainLoadingScreen} />
@@ -102,8 +104,8 @@ export default function App() {
                 options={{ headerShown: true, title:"Your Questions" }}
               />
               <Stack.Screen
-                name="Create Summary"
-                component={CreateSummary}
+                name="Summaries"
+                component={Summaries}
                 options={{ headerShown: true }}
               />
               <Stack.Screen

@@ -461,24 +461,11 @@ export function AppProvider({ children }) {
     nums: [10, 15],
   };
 
-  // useEffect(function(){
-  //   async function deleteAllFlashcards(){
-  //     await AsyncStorage.removeItem("flashcards")
-  //   }
-  //   deleteAllFlashcards()
-  // },[])
-
-  // useEffect(function () {
-  //   async function removeUser(){
-  //     await AsyncStorage.removeItem("current-user")
-  //   }
-  //   removeUser()
-  // }, []);
-
   const [error, setError] = useState("");
   const navigation = useNavigation();
-  const ip = "https://studymateapi.onrender.com";
   const localip = "http://192.168.0.110:6969";
+  // const ip = "https://studymateapi.onrender.com";
+  const ip = localip;
   const [allFlashCards, setAllFlashCards] = useState([]);
   const [allQuestions, setAllQuestions] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
@@ -491,6 +478,8 @@ export function AppProvider({ children }) {
   const [verificationCode, setVerificationCode] = useState(null);
   const [verificationModalVisible, setVerificationModalVisible] =
     useState(true);
+  const [loadingSummaries, setLoadingSummaries] = useState(false);
+  const [summaries, setSummaries] = useState([])
 
   const verifyUser = async () => {
     console.log("Started Verification...");
@@ -729,6 +718,23 @@ export function AppProvider({ children }) {
     navigation.goBack();
   };
 
+  const getUserSummaries = async () => {
+    setLoadingSummaries(true)
+    console.log("Fetching Summaries");
+    const currUser = await AsyncStorage.getItem("current-user");
+    if (!currUser){
+      console.log("Couldn't find user");      
+      return      
+    } 
+    const parsedUser = JSON.parse(currUser);
+    const res = await fetch(`${ip}/conversation/${parsedUser.id}`);
+    const data = await res.json();
+    // console.log(data.data.conversations);
+    console.log("Summaries Fetched");
+    setSummaries(data.data.conversations)
+    setLoadingSummaries(false)
+  };
+
   const value = {
     dummyFlashCards,
     dummyQuestions,
@@ -759,6 +765,10 @@ export function AppProvider({ children }) {
     getVerificationCode,
     verificationModalVisible,
     setVerificationModalVisible,
+    getUserSummaries,
+    loadingSummaries,
+    setLoadingSummaries,
+    summaries
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

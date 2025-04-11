@@ -1,8 +1,7 @@
 import { BackHandler, StyleSheet, Text, View } from "react-native";
 import OptionsList from "../components/HomeScreenComponents/OptionsList";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
 
 export default function HomeScreen() {
   useFocusEffect(function () {
@@ -21,6 +20,9 @@ export default function HomeScreen() {
   function goToGenerateQuestions() {
     navigation.navigate("Generate Questions");
   }
+  function goToGenerateSummary(){
+    navigation.navigate("Summaries")
+  }
   return (
     <View style={styles.container}>
       <OptionsList
@@ -33,7 +35,7 @@ export default function HomeScreen() {
         optionName="Generate Questions"
         iconName="bulb"
       />
-      <OptionsList optionName="Create Summary" iconName="document-text" />
+      <OptionsList optionName="Create Summary" iconName="document-text" pressFunction={goToGenerateSummary} />
     </View>
   );
 }
