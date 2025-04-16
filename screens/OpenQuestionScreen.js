@@ -56,7 +56,7 @@ export default function OpenQuestionScreen() {
       if (flatQuestionsAnswers[index].isCorrect) {
         total += 1;
       } else {
-        console.log(flatQuestionsAnswers[index]);
+        // console.log(flatQuestionsAnswers[index]);
       }
     }
     scrollViewRef.current.scrollTo({ y: 0, animated: true });

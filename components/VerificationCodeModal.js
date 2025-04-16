@@ -23,7 +23,6 @@ export default function VerificationCodeModal({
       return;
     }
     const parsedCode = JSON.parse(code);
-    console.log(parsedCode);
     
     if (input.length !== 6){
       return

@@ -464,7 +464,7 @@ export function AppProvider({ children }) {
   const [error, setError] = useState("");
   const navigation = useNavigation();
   const localip = "http://192.168.0.110:6969";
-  // const ip = "https://studymateapi.onrender.com";
+  // const ip = "https://api.keabafrica.com";
   const ip = localip;
   const [allFlashCards, setAllFlashCards] = useState([]);
   const [allQuestions, setAllQuestions] = useState([]);
@@ -479,7 +479,12 @@ export function AppProvider({ children }) {
   const [verificationModalVisible, setVerificationModalVisible] =
     useState(true);
   const [loadingSummaries, setLoadingSummaries] = useState(false);
-  const [summaries, setSummaries] = useState([])
+  const [summaries, setSummaries] = useState([]);
+  const [creatingSummary, setCreatingSummary] = useState(false);
+  const [question, setQuestion] = useState("");
+  const [allConversations, setAllConversations] = useState([]);
+  const [currentConversation, setCurrentConversation] = useState({});
+  const [fetchingConversation, setFetchingConversation] = useState(false);
 
   const verifyUser = async () => {
     console.log("Started Verification...");
@@ -533,7 +538,6 @@ export function AppProvider({ children }) {
       setSigningUp(false);
       return;
     }
-    console.log(data.verificationCode);
     await AsyncStorage.setItem(
       "verification",
       JSON.stringify(data.verificationCode)
@@ -719,20 +723,135 @@ export function AppProvider({ children }) {
   };
 
   const getUserSummaries = async () => {
-    setLoadingSummaries(true)
+    setLoadingSummaries(true);
     console.log("Fetching Summaries");
     const currUser = await AsyncStorage.getItem("current-user");
-    if (!currUser){
-      console.log("Couldn't find user");      
-      return      
-    } 
+    if (!currUser) {
+      console.log("Couldn't find user");
+      return;
+    }
     const parsedUser = JSON.parse(currUser);
     const res = await fetch(`${ip}/conversation/${parsedUser.id}`);
     const data = await res.json();
-    // console.log(data.data.conversations);
     console.log("Summaries Fetched");
-    setSummaries(data.data.conversations)
-    setLoadingSummaries(false)
+    setSummaries(data.data.conversations);
+    setLoadingSummaries(false);
+  };
+
+  const createNewSummary = async () => {
+    const file = await DocumentPicker.getDocumentAsync({
+      type: "application/pdf",
+      multiple: false,
+    });
+    if (!file.assets) {
+      console.log("No File Selected");
+      return;
+    }
+    console.log("File Selected");
+    const loggedInUser = await AsyncStorage.getItem("current-user");
+    if (!loggedInUser) {
+      console.log("No user ID found");
+      return;
+    }
+    const parsedUser = JSON.parse(loggedInUser);
+    const formData = new FormData();
+    formData.append("convoFile", {
+      uri: file.assets[0].uri,
+      type: file.assets[0].mimeType,
+      name: file.assets[0].name,
+    });
+    formData.append("id", parsedUser.id);
+    console.log("Generating Conversation");
+    setCreatingSummary(true);
+    const res = await fetch(`${ip}/conversation`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      body: formData,
+    });
+    if (!res.ok) {
+      setCreatingSummary(false);
+      Alert.alert("Error", "Something went wrong. Please try again.");
+      return;
+    }
+    const data = await res.json();
+    setCreatingSummary(false);
+    setSummaries((sums) => [...sums, data.data.conversation]);
+  };
+
+  const sendQuestionAndReceiveAnswer = async (id) => {
+    setQuestion("");
+    console.log(1);
+
+    Keyboard.dismiss();
+    if (question === "") {
+      return;
+    }
+    console.log(2);
+    const recentQuestion = {
+      text: question,
+      sender: "user",
+    };
+    setAllConversations((conversations) => [...conversations, recentQuestion]);
+    console.log(3);
+    setQuestion("");
+    console.log("Sent the Question");
+    const res = await fetch(`${ip}/conversation`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        question: question,
+        convoId: id,
+      }),
+    });
+    console.log(4);
+    if (!res.ok) {
+      Alert.alert("Error", "Something Went Wrong. Please Try Again Later.");
+    }
+    console.log(5);
+    const data = await res.json();
+    if (data.status === "fail") {
+      Alert.alert("Error", "Sending Question Failed");
+      return;
+    }
+    console.log("Done");
+
+    const updatedConversations = JSON.parse(
+      data.data.conversation.conversations
+    );
+    setAllConversations(updatedConversations);
+  };
+
+  const getCurrentConversation = async (id) => {
+    setFetchingConversation(true);
+    console.log("The conversation ID is ", id);
+    const res = await fetch(`${ip}/conversation/currentconversation/${id}`);
+    if (!res.ok) {
+      console.log("Faulty response");
+      setFetchingConversation(false);
+      Alert.alert("Error", "Something went wrong. Try Again Later");
+      navigation.goBack();
+      return;
+    }
+    const data = await res.json();
+    if (data.status === "fail") {
+      console.log("Failed to get response from server");
+      console.log(data);
+      setFetchingConversation(false);
+      Alert.alert("Error", data.message);
+      navigation.goBack();
+      return;
+    }
+    const receivedConversations =
+      JSON.parse(data.data.conversation.conversations) === null
+        ? []
+        : JSON.parse(data.data.conversation.conversations);
+    setCurrentConversation(data.data.conversation);
+    setAllConversations(receivedConversations);
+    setFetchingConversation(false);
   };
 
   const value = {
@@ -768,7 +887,18 @@ export function AppProvider({ children }) {
     getUserSummaries,
     loadingSummaries,
     setLoadingSummaries,
-    summaries
+    summaries,
+    createNewSummary,
+    creatingSummary,
+    question,
+    setQuestion,
+    sendQuestionAndReceiveAnswer,
+    allConversations,
+    setAllConversations,
+    currentConversation,
+    setCurrentConversation,
+    getCurrentConversation,
+    fetchingConversation,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

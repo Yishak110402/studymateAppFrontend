@@ -8,8 +8,6 @@ import { COLORS } from "../constants/COLORS";
 
 export default function UserBalanceDetails() {
   const { currentUser } = useContext(AppContext);
-  console.log(currentUser);
-
   return (
     <View style={styles.container}>
       {currentUser && (

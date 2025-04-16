@@ -82,16 +82,12 @@ export default function CreateQuestionsForm() {
       body: formData,
     });
 
-    console.log("Received");
-
     if (!res.ok) {
       Alert.alert("Failed", "Something Went Wrong. Try Again Later");
       setMakingQuestions(false);
       return;
     }
-    console.log("reponse ok");
-
-    const data = await res.json();
+   const data = await res.json();
 
     if (data.status === "fail") {
       Alert.alert("Failed", data.message);

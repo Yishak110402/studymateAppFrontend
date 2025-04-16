@@ -58,11 +58,6 @@ export default function LoginScreen() {
     console.log(error);
   }
 
-  useEffect(function(){
-    console.log(loggingIn);
-    
-  },[loggingIn])
-
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>

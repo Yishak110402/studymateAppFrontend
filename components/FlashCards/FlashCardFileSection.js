@@ -15,7 +15,6 @@ export default function FlashCardFileSection({ setLoading, name }) {
       type: "application/pdf",
       multiple: false,
     });
-
     if (!file.assets[0].uri) {
       console.log("No File Selected");
       return;
