@@ -47,10 +47,11 @@ function DrawerNavFlow() {
         drawerActiveTintColor: COLORS.primary100,
         drawerActiveBackgroundColor: COLORS.primary700,
         headerStyle: {
-          backgroundColor: COLORS.primary100,
+          backgroundColor: "#f7f7f7",
+          borderBottomWidth: 0
         },
         headerTintColor: COLORS.primary700,
-        sceneStyle: { backgroundColor: COLORS.primary700 },
+        sceneStyle: { backgroundColor: "#f7f7f7" },
         headerTitleStyle:{
           fontSize: 18
         },
@@ -78,16 +79,16 @@ export default function App() {
               screenOptions={{
                 headerShown: false,
                 contentStyle: {
-                  backgroundColor:COLORS2.primary700
+                  backgroundColor: "#f7f7f7"
                 },
                 headerStyle: {
-                  backgroundColor: COLORS2.primary300,
+                  backgroundColor: "#f7f7f7",
                 },
                 headerTintColor: COLORS.primary700,
                 headerTitleStyle:{
                   fontSize: 16
                 },
-                animation:'slide_from_right',
+                animation:'fade',
                 headerBlurEffect: 'systemChromeMaterial'
         
               }}

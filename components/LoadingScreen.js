@@ -16,15 +16,15 @@ const styles = StyleSheet.create({
         alignItems:"center",
         position:"absolute",
         zIndex: 1000,
-        backgroundColor:"rgba(0,0,0,0.6)",
+        backgroundColor:"rgba(0,0,0,0.8)",
         flex: 1,
-        left: -40,
+        left: -65,
         top: -15
     },
     loadingText:{
         fontSize: 24,
         color:COLORS.primary100,
-        marginTop: 400
+        marginTop: 350
     }
 
 })

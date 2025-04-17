@@ -11,7 +11,7 @@ export default function OptionsList({
     <View>
       <Pressable
         onPress={pressFunction}
-        android_ripple={{ color: COLORS.primary700 }}>
+        android_ripple={{ color: "#f7f7f7" }}>
         <View style={styles.optionContainer}>
           <Ionicons color={COLORS.primary700} size={30} name={iconName} />
           <Text style={styles.optionText}>{optionName}</Text>
@@ -23,14 +23,15 @@ export default function OptionsList({
 
 const styles = StyleSheet.create({
   optionContainer: {
-    backgroundColor: COLORS.primary100,
+    backgroundColor: "#fff",
     marginHorizontal: 10,
-    marginVertical: 15,
+    marginVertical: 8,
     height: 100,
     borderRadius: 8,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 19,
+    elevation: 2
   },
   optionText: {
     color: COLORS.primary700,

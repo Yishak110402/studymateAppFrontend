@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { createContext, useEffect, useState } from "react";
-import { Alert, Keyboard } from "react-native";
+import { Alert, BackHandler, Keyboard } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 export const AppContext = createContext();
 export function AppProvider({ children }) {
@@ -464,8 +464,8 @@ export function AppProvider({ children }) {
   const [error, setError] = useState("");
   const navigation = useNavigation();
   const localip = "http://192.168.0.110:6969";
-  const ip = "https://studymate.keabafrica.com";
-  // const ip = localip;
+  // const ip = "https://studymate.keabafrica.com";
+  const ip = localip;
   const [allFlashCards, setAllFlashCards] = useState([]);
   const [allQuestions, setAllQuestions] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
@@ -484,7 +484,8 @@ export function AppProvider({ children }) {
   const [question, setQuestion] = useState("");
   const [allConversations, setAllConversations] = useState([]);
   const [currentConversation, setCurrentConversation] = useState({});
-  const [fetchingConversation, setFetchingConversation] = useState(true);
+  const [fetchingConversation, setFetchingConversation] = useState(false);
+  const [awaitingAnswer, setAwaitingAnswer] = useState(false);
 
   const verifyUser = async () => {
     console.log("Started Verification...");
@@ -506,6 +507,7 @@ export function AppProvider({ children }) {
     });
     if (!res.ok) {
       Alert.alert("Error", "Something Went Wrong. Try again later");
+      BackHandler.exitApp()
       return;
     }
     const data = await res.json();
@@ -781,10 +783,12 @@ export function AppProvider({ children }) {
   };
 
   const sendQuestionAndReceiveAnswer = async (id) => {
+    if(awaitingAnswer){
+      return
+    }
     setQuestion("");
-    console.log(1);
-
     Keyboard.dismiss();
+    setAwaitingAnswer(true);
     if (question === "") {
       return;
     }
@@ -810,11 +814,13 @@ export function AppProvider({ children }) {
     console.log(4);
     if (!res.ok) {
       Alert.alert("Error", "Something Went Wrong. Please Try Again Later.");
+      setAwaitingAnswer(false);
     }
     console.log(5);
     const data = await res.json();
     if (data.status === "fail") {
       Alert.alert("Error", "Sending Question Failed");
+      setAwaitingAnswer(false);
       return;
     }
     console.log("Done");
@@ -822,6 +828,7 @@ export function AppProvider({ children }) {
     const updatedConversations = JSON.parse(
       data.data.conversation.conversations
     );
+    setAwaitingAnswer(false);
     setAllConversations(updatedConversations);
   };
 
@@ -839,12 +846,12 @@ export function AppProvider({ children }) {
     const data = await res.json();
     if (data.status === "fail") {
       console.log("Failed to get response from server");
-      console.log(data);
       setFetchingConversation(false);
       Alert.alert("Error", data.message);
       navigation.goBack();
       return;
     }
+    console.log("Received");
     const receivedConversations =
       JSON.parse(data.data.conversation.conversations) === null
         ? []
@@ -899,6 +906,7 @@ export function AppProvider({ children }) {
     setCurrentConversation,
     getCurrentConversation,
     fetchingConversation,
+    awaitingAnswer
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

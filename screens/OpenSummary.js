@@ -10,7 +10,7 @@ import { COLORS } from "../constants/COLORS";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { AppContext } from "../context/AppContext";
-import LoadingScreen from "./../components/LoadingScreen"
+import LoadingScreen from "./../components/LoadingScreen";
 
 export default function OpenSummary() {
   const scrollViewRef = useRef();
@@ -23,6 +23,7 @@ export default function OpenSummary() {
     currentConversation,
     getCurrentConversation,
     fetchingConversation,
+    awaitingAnswer,
   } = useContext(AppContext);
   const [modalVisible, setModalVisible] = useState(false);
   const route = useRoute();
@@ -38,13 +39,11 @@ export default function OpenSummary() {
 
   return (
     <KeyboardAvoidingView>
-      {
-        fetchingConversation  && (
-          <View style={{height:'100%'}}>
-            <LoadingScreen text={"Loading conversation"} />
-          </View>
-        )
-      }
+      {fetchingConversation && (
+        <View style={{ height: "100%" }}>
+          <LoadingScreen text={"Loading conversation"} />
+        </View>
+      )}
       {!fetchingConversation && (
         <View style={{ height: "100%" }}>
           <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -58,28 +57,41 @@ export default function OpenSummary() {
             {allConversations.length === 0 && (
               <Text style={styles.noMessagesText}>Send your first message</Text>
             )}
-            <ScrollView ref={scrollViewRef}>
-              {allConversations && allConversations.map((convo, idx) => {
-                return (
-                  <View
-                    style={[
-                      styles.messagesContainer,
-                      convo.sender === "user"
-                        ? styles.userMessage
-                        : styles.aiMessage,
-                    ]}
-                    key={idx}>
-                    <Text
+            <ScrollView
+              ref={scrollViewRef}
+              showsVerticalScrollIndicator={false}>
+              {allConversations &&
+                allConversations.map((convo, idx) => {
+                  return (
+                    <View
                       style={[
+                        styles.messagesContainer,
                         convo.sender === "user"
-                          ? styles.userMessageText
-                          : styles.aiMessageText,
-                      ]}>
-                      {convo.text}
-                    </Text>
-                  </View>
-                );
-              })}
+                          ? styles.userMessage
+                          : styles.aiMessage,
+                      ]}
+                      key={idx}>
+                      <Text
+                        style={[
+                          convo.sender === "user"
+                            ? styles.userMessageText
+                            : styles.aiMessageText,
+                        ]}>
+                        {convo.text}
+                      </Text>
+                    </View>
+                  );
+                })}
+              {awaitingAnswer && (
+                <View
+                  style={[
+                    styles.messagesContainer,
+                    styles.aiMessage,
+                    styles.loadingMessageContainer,
+                  ]}>
+                  <Text style={styles.loadingMessageText}>...</Text>
+                </View>
+              )}
             </ScrollView>
           </View>
           <View style={styles.questionInputContainer}>
@@ -92,7 +104,9 @@ export default function OpenSummary() {
               value={question}
             />
             <TouchableOpacity
-              onPress={() => sendQuestionAndReceiveAnswer(currentConversation.id)}>
+              onPress={() =>
+                sendQuestionAndReceiveAnswer(currentConversation.id)
+              }>
               <View style={styles.sendButton}>
                 <Ionicons name="send" color={COLORS.primary300} size={24} />
               </View>
@@ -235,5 +249,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     fontWeight: 400,
+  },
+  loadingMessageText: {
+    fontSize: 25,
+    color: "white",
+  },
+  loadingMessageContainer: {
+    paddingBlock: 1,
+    width: "40%",
+    justifyContent: "center",
   },
 });
