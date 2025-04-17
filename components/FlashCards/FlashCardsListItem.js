@@ -9,6 +9,8 @@ import {
 import { COLORS } from "../../constants/COLORS";
 import { Ionicons } from "@expo//vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useContext } from "react";
+import { AppContext } from "../../context/AppContext";
 export default function FlashCardListItem({ flashCard = { name: "Name" } }) {
   const name = flashCard.name || "Name";
   const navigation = useNavigation();
@@ -17,6 +19,7 @@ export default function FlashCardListItem({ flashCard = { name: "Name" } }) {
       data: flashCard,
     });
   }
+  const {deleteFlashcard} = useContext(AppContext)
 
   return (
     <Pressable
@@ -32,11 +35,14 @@ export default function FlashCardListItem({ flashCard = { name: "Name" } }) {
               {
                 style:'destructive',
                 text:'Yes',
+                onPress: ()=>{
+                  deleteFlashcard(flashCard.id)
+                }
               },
               {
                 text:" No"
               }
-            ])
+            ],{cancelable: true,})
           }}>
             <View>
               <Ionicons name="trash-bin" color={"#e22926"} size={30} />

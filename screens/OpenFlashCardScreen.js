@@ -8,12 +8,10 @@ import { AppContext } from "../context/AppContext";
 import LoadingScreen from "../components/LoadingScreen";
 
 export default function OpenFlashCardScreen() {
-  const { deleteFlashcard, deletingFlashCard } = useContext(AppContext);
   const route = useRoute();
   const flashCardID = route.params.data.id;
   const flashCardData = JSON.parse(route.params.data.content).flashcards;
   const navigation = useNavigation();
-
   const [pageNumber, setPageNumber] = useState(0);
   const [showQuestion, setShowQuestion] = useState(true);
   useEffect(function(){
@@ -71,17 +69,7 @@ export default function OpenFlashCardScreen() {
         </Text>
         <FlashCardNavigationButton pressFunction={nextQuestion} text={"Next"} />
       </View>
-      {/* <Pressable
-        android_ripple={{ color: COLORS.primary500 }}
-        style={styles.deleteButtonContainer}
-        onPress={() => {
-          deleteFlashcard(flashCardID);
-        }}>
-        <View>
-          <Text style={styles.deleteButtonText}>Delete Flashcard</Text>
-        </View>
-      </Pressable> */}
-      {deletingFlashCard && <LoadingScreen text={"Deleting Flashcard"} />}
+      
     </View>
   );
 }

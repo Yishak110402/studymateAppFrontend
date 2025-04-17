@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     // borderWidth: 1
   },
   noQuestionsText: {
-    color: COLORS.primary100,
+    color: COLORS.primary700,
     marginTop: 10,
     fontSize: 17,
     marginBottom: 15,

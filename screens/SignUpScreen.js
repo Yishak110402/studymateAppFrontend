@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   logo: {
     fontSize: 46,
     textAlign: "center",
-    color: COLORS.primary100,
+    color: COLORS.primary700,
     fontWeight: "bold",
     marginBottom: 25,
   },
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 25,
-    color: COLORS.primary100,
+    color: COLORS.primary700,
     fontWeight: "bold",
     marginBottom: 7,
   },
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 13,
-    color: COLORS.primary300,
+    color: COLORS.primary700,
     marginLeft: 6,
   },
   btnContainer: {
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   navTxt: {
-    color: COLORS.primary100,
+    color: COLORS.primary700,
     fontSize: 14,
   },
   warningText: {

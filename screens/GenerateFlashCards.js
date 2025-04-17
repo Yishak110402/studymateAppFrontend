@@ -17,8 +17,13 @@ import { useNavigation } from "@react-navigation/native";
 import AddNewButton from "../components/AddNewButton";
 
 export default function GenerateFlashCards() {
-  const { allFlashCards, setRefresh, loadFlashCards, flashCardsLoading } =
-    useContext(AppContext);
+  const {
+    allFlashCards,
+    setRefresh,
+    loadFlashCards,
+    flashCardsLoading,
+    deletingFlashcard
+  } = useContext(AppContext);
   const goToCreateFlashCard = () => {
     navigation.navigate("Create Flashcard");
   };
@@ -59,6 +64,7 @@ export default function GenerateFlashCards() {
         </View>
       </View>
       {flashCardsLoading && <LoadingScreen text={"Loading Flashcards..."} />}
+      {deletingFlashcard && <LoadingScreen text={"Deleting Flashcard..."}/>}
     </View>
   );
 }
@@ -76,7 +82,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   noFlashCards: {
-    color: COLORS.primary100,
+    color: COLORS.primary700,
     fontSize: 16,
     textAlign: "center",
     marginVertical: 20,

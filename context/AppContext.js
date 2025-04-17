@@ -673,7 +673,12 @@ export function AppProvider({ children }) {
   };
 
   const deleteFlashcard = async (id) => {
+    if(deletingFlashCard) return
     console.log("Delete started");
+    if(!id){
+      Alert.alert("Error", "Flashcard ID not provided")
+      return
+    }
     setDeletingFlashCard(true);
     const res = await fetch(`${ip}/generate/flashcards/${id}`, {
       method: "DELETE",
@@ -696,7 +701,7 @@ export function AppProvider({ children }) {
     });
     // Alert.alert("", "Deleted Successfully")
     setDeletingFlashCard(false);
-    navigation.goBack();
+    // navigation.goBack();
   };
 
   const deleteQuestion = async (id) => {

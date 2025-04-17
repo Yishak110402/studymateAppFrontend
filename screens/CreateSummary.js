@@ -15,8 +15,14 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default function Summaries() {
   const navigation = useNavigation();
-  const { getUserSummaries, loadingSummaries, summaries, createNewSummary, creatingSummary, setQuestion } =
-    useContext(AppContext);
+  const {
+    getUserSummaries,
+    loadingSummaries,
+    summaries,
+    createNewSummary,
+    creatingSummary,
+    setQuestion,
+  } = useContext(AppContext);
   useEffect(function () {
     getUserSummaries();
   }, []);
@@ -24,6 +30,11 @@ export default function Summaries() {
     <View style={styles.container}>
       {loadingSummaries && <LoadingScreen text={"Loading Summaries..."} />}
       <View>
+        {!loadingSummaries && summaries.length !== 0 && (
+          <View>
+            <Text>No Conversations Created</Text>
+          </View>
+        )}
         {!loadingSummaries && (
           <FlatList
             data={summaries}
@@ -67,8 +78,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 999,
-    alignSelf:'center',
+    alignSelf: "center",
     marginTop: 5,
-    backgroundColor: COLORS.primary700
+    backgroundColor: COLORS.primary700,
   },
 });
