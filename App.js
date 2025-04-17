@@ -23,6 +23,7 @@ import MainLoadingScreen from "./screens/MainLoadingScreen";
 import BuyCreditsScreen from "./screens/BuyCreditsScreen";
 import Summaries from "./screens/CreateSummary";
 import OpenSummary from "./screens/OpenSummary";
+import CustomLogOutButton from "./components/CustomLogOutButton";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -31,6 +32,7 @@ function DrawerNavFlow() {
   return (
     <Drawer.Navigator
       initialRouteName="Home"
+      drawerContent={(props)=> <CustomLogOutButton {...props} />}
       screenOptions={{
         drawerStyle: {
           backgroundColor: COLORS.primary300,
@@ -58,9 +60,9 @@ function DrawerNavFlow() {
         },
       }}>
       <Drawer.Screen name="Home" component={HomeScreen} />
-      <Drawer.Screen name="Settings" component={SettingsScreen} />
+      {/* <Drawer.Screen name="Settings" component={SettingsScreen} /> */}
       <Drawer.Screen name="Buy Credits" component={BuyCreditsScreen} />
-      <Drawer.Screen name="Saved Flashcards" component={SavedFlashCards} />
+      {/* <Drawer.Screen name="Saved Flashcards" component={SavedFlashCards} /> */}
     </Drawer.Navigator>
   );
 }
@@ -69,7 +71,7 @@ export default function App() {
   return (
     <>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <StatusBar style="inverted" translucent />
+        <StatusBar style="inverted" />
         <NavigationContainer>
           <AppProvider>
             <Stack.Navigator

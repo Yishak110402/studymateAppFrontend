@@ -464,8 +464,8 @@ export function AppProvider({ children }) {
   const [error, setError] = useState("");
   const navigation = useNavigation();
   const localip = "http://192.168.0.110:6969";
-  // const ip = "https://api.keabafrica.com";
-  const ip = localip;
+  const ip = "https://studymate.keabafrica.com";
+  // const ip = localip;
   const [allFlashCards, setAllFlashCards] = useState([]);
   const [allQuestions, setAllQuestions] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
@@ -477,14 +477,14 @@ export function AppProvider({ children }) {
   const [deletingQuestion, setDeletingQuestion] = useState(false);
   const [verificationCode, setVerificationCode] = useState(null);
   const [verificationModalVisible, setVerificationModalVisible] =
-    useState(true);
+    useState(false);
   const [loadingSummaries, setLoadingSummaries] = useState(false);
   const [summaries, setSummaries] = useState([]);
   const [creatingSummary, setCreatingSummary] = useState(false);
   const [question, setQuestion] = useState("");
   const [allConversations, setAllConversations] = useState([]);
   const [currentConversation, setCurrentConversation] = useState({});
-  const [fetchingConversation, setFetchingConversation] = useState(false);
+  const [fetchingConversation, setFetchingConversation] = useState(true);
 
   const verifyUser = async () => {
     console.log("Started Verification...");
@@ -667,7 +667,7 @@ export function AppProvider({ children }) {
     }
     await AsyncStorage.removeItem("current-user");
     setCurrentUser({});
-    navigation.navigate("Sign Up");
+    navigation.navigate("Log In");
   };
 
   const deleteFlashcard = async (id) => {

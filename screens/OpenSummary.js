@@ -39,7 +39,11 @@ export default function OpenSummary() {
   return (
     <KeyboardAvoidingView>
       {
-        fetchingConversation  && <LoadingScreen text={"Loading conversation"} />
+        fetchingConversation  && (
+          <View style={{height:'100%'}}>
+            <LoadingScreen text={"Loading conversation"} />
+          </View>
+        )
       }
       {!fetchingConversation && (
         <View style={{ height: "100%" }}>
