@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "StudyMate+",
+    "name": "Abyssinia Academy",
     "slug": "my-new-app",
-    "version": "1.0.4",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,7 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yishak36.studymate",
+      "bundleIdentifier": "com.yishak36.abyssiniaacademy",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -24,7 +24,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.yishak36.studymate"
+      "package": "com.yishak36.abyssiniaacademy"
     },
     "web": {
       "favicon": "./assets/favicon.png"

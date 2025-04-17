@@ -12,7 +12,7 @@ export default function MainLoadingScreen(){
     },[])
     return(
         <View style={styles.container}>
-            <Text style={styles.logo}>StudyMate+</Text>
+            <Text style={styles.logo}>ABYSSINIA ACADEMY</Text>
             <Text style={styles.loadingText}>Loading...</Text>
         </View>
     )
@@ -26,11 +26,11 @@ const styles = StyleSheet.create({
   logo: {
     fontSize: 45,
     fontWeight: "bold",
-    color: COLORS.primary300,
+    color: COLORS.primary700,
     marginBottom: 55,
   },
   loadingText: {
-    color: COLORS.primary100,
+    color: COLORS.primary700,
     fontSize: 17,
     fontWeight:'300'
   },

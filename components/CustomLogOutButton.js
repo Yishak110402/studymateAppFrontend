@@ -12,6 +12,9 @@ export default function CustomLogOutButton(props) {
   const { logOut } = useContext(AppContext);
   return (
     <View style={styles.drawerContainer}>
+      <View style={styles.drawerHeader}>
+        <Text style={styles.drawerHeaderText}>ABYSSINIA ACADEMY</Text>
+      </View>
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
@@ -38,5 +41,20 @@ const styles = StyleSheet.create({
   buttonText:{
     color: COLORS.primary700,
     fontSize: 20
+  },
+  drawerHeader:{
+    backgroundColor: COLORS.primary700,
+    flex: 0.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: -15,
+    // borderRadius: 18
+    // borderBottomRightRadius: 18
+  },
+  drawerHeaderText:{
+    fontSize: 35,
+    color: "#f7f7f7",
+    fontWeight: 600,
+    textAlign:'center'
   }
 });

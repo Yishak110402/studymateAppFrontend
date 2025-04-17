@@ -35,13 +35,18 @@ function DrawerNavFlow() {
       drawerContent={(props)=> <CustomLogOutButton {...props} />}
       screenOptions={{
         drawerStyle: {
-          backgroundColor: COLORS.primary300,
+          backgroundColor: "#f7f7f7",
         },
         drawerItemStyle:{
           marginVertical: 2,
           marginHorizontal: -12,
           borderRadius:0,
-          paddingHorizontal: 5
+          paddingHorizontal: 5,
+          justifyContent:'center',
+          // alignItems:'center'
+        },
+        drawerLabelStyle:{
+          fontSize: 16
         },
         drawerInactiveTintColor: COLORS.primary700,
         drawerActiveTintColor: COLORS.primary100,
@@ -60,10 +65,16 @@ function DrawerNavFlow() {
           return <UserBalanceDetails />
         },
       }}>
-      <Drawer.Screen name="Home" component={HomeScreen} />
-      {/* <Drawer.Screen name="Settings" component={SettingsScreen} /> */}
-      <Drawer.Screen name="Buy Credits" component={BuyCreditsScreen} />
-      {/* <Drawer.Screen name="Saved Flashcards" component={SavedFlashCards} /> */}
+      <Drawer.Screen name="Home" component={HomeScreen} options={{
+        drawerIcon: ({color})=>{
+          return <Ionicons name='home' color={color} size={25}/>
+        }
+      }} />
+      <Drawer.Screen name="Buy Credits" component={BuyCreditsScreen} options={{
+        drawerIcon: (color)=>{
+          return <Ionicons name="cash" color={color} size={25}/>
+        }
+      }}  />
     </Drawer.Navigator>
   );
 }
@@ -72,17 +83,18 @@ export default function App() {
   return (
     <>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <StatusBar style="dark" />
+        <StatusBar style="dark" translucent={true} />
         <NavigationContainer>
           <AppProvider>
             <Stack.Navigator
               screenOptions={{
+              
                 headerShown: false,
                 contentStyle: {
                   backgroundColor: "#f7f7f7"
                 },
                 headerStyle: {
-                  backgroundColor: "#f7f7f7",
+                  backgroundColor: "#fff",
                 },
                 headerTintColor: COLORS.primary700,
                 headerTitleStyle:{

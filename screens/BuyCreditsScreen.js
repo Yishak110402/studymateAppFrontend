@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 35,
-    color: COLORS.primary100,
+    color: COLORS.primary700,
     fontWeight: "bold",
     marginBottom: 20,
   },
@@ -143,11 +143,11 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 18,
-    color: COLORS.primary100,
+    color: COLORS.primary700,
   },
   totalPrice: {
     fontSize: 21,
-    color: COLORS.primary100,
+    color: COLORS.primary700,
     fontWeight: "bold",
     marginBottom: 15,
   },
@@ -168,6 +168,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 8,
     borderRadius: 10,
+    elevation: 3
   },
   stepsHeader: {
     fontSize: 21,
