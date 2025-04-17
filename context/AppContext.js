@@ -866,6 +866,28 @@ export function AppProvider({ children }) {
     setFetchingConversation(false);
   };
 
+  const deleteConversation = async(id)=>{
+    if(!id){
+      Alert.alert("Error", "You need to provide a conversation ID")
+      return
+    }
+    const res = await fetch(`${ip}/conversation/${id}`,{
+      method:"DELETE"
+    })
+    if(!res.ok){
+      Alert.alert("Error", "Something went wrong. Try again later")
+      return
+    }
+    const data = await res.json()
+    if(data.status=== "fail"){
+      Alert.alert("Error", data.message)
+      return
+    }
+    setSummaries((all)=>(all.filter((conv)=>{
+      return conv.id !== id
+    })))
+  }
+
   const value = {
     dummyFlashCards,
     dummyQuestions,
