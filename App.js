@@ -72,7 +72,7 @@ export default function App() {
   return (
     <>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <StatusBar style="inverted" />
+        <StatusBar style="dark" />
         <NavigationContainer>
           <AppProvider>
             <Stack.Navigator

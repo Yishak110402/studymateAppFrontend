@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
   questionsHeader: {
     fontSize: 17,
-    color: COLORS.primary100,
+    color: COLORS.primary700,
     marginBottom: 15,
   },
   submitButton: {

@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   instruction: {
-    color: COLORS.primary100,
+    color: COLORS.primary700,
     marginBottom: 20,
     textAlign: "center",
     fontSize: 16,
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   pageNum: {
-    color: COLORS.primary100,
+    color: COLORS.primary700,
   },
   deleteButtonContainer: {
     backgroundColor: COLORS.error,

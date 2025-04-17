@@ -13,13 +13,13 @@ export default function UserBalanceDetails() {
       {currentUser && (
         <>
           <View style={styles.detailContainer}>
-            <Ionicons name="albums" size={15} color={COLORS.primary300} />
+            <Ionicons name="albums" size={15} color={"#f7f7f7"} />
             <Text style={styles.detailText}>
               {currentUser.flashcardsBalance}
             </Text>
           </View>
           <View style={styles.detailContainer}>
-            <Ionicons name="bulb" size={15} color={COLORS.primary300} />
+            <Ionicons name="bulb" size={15} color={"#f7f7f7"} />
             <Text style={styles.detailText}>
               {currentUser.questionsBalance}
             </Text>
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
   detailText: {
     fontSize: 15,
-    color: COLORS.primary300,
+    color: "#f7f7f7",
     marginLeft: 5,
   },
 });

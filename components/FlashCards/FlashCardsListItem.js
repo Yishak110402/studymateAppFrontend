@@ -1,8 +1,15 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { COLORS } from "../../constants/COLORS";
 import { Ionicons } from "@expo//vector-icons";
 import { useNavigation } from "@react-navigation/native";
-export default function FlashCardListItem({ flashCard={name:"Name"} }) {
+export default function FlashCardListItem({ flashCard = { name: "Name" } }) {
   const name = flashCard.name || "Name";
   const navigation = useNavigation();
   function navigateOpenFlashCard() {
@@ -18,7 +25,24 @@ export default function FlashCardListItem({ flashCard={name:"Name"} }) {
       style={styles.listContainer}>
       <View style={styles.innerContainer}>
         <Text style={styles.listText}>{name}</Text>
-        <Ionicons name="arrow-forward" size={25} color={COLORS.primary700} />
+        <View style={styles.btnsContainer}>
+          {/* <Ionicons name="arrow-forward" size={25} color={COLORS.primary700} /> */}
+          <TouchableOpacity onPress={()=>{
+            Alert.alert("Delete Flashcard", "Are you sure you want to delete the flashcard?", [
+              {
+                style:'destructive',
+                text:'Yes',
+              },
+              {
+                text:" No"
+              }
+            ])
+          }}>
+            <View>
+              <Ionicons name="trash-bin" color={COLORS.primary700} size={25} />
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     </Pressable>
   );
@@ -32,6 +56,7 @@ const styles = StyleSheet.create({
     padding: 5,
     height: 50,
     paddingHorizontal: 15,
+    justifyContent:'center'
   },
   innerContainer: {
     flexDirection: "row",
@@ -42,4 +67,9 @@ const styles = StyleSheet.create({
     color: COLORS.primary700,
     fontSize: 15,
   },
+  btnsContainer:{
+    flexDirection:'row',
+    gap: 5,
+    alignItems:'center'
+  }
 });

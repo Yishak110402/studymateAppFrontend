@@ -41,7 +41,7 @@ export default function QuestionsListItem({ question = "Name of question"}) {
 }
 const styles = StyleSheet.create({
   questionContainer: {
-    backgroundColor: COLORS.primary300,
+    backgroundColor: "#fff",
     margin: 0,
     marginBottom: 10,
     paddingVertical: 10,
@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary500,
     padding: 10,
     borderRadius: 5,
-    elevation: 2,
     marginRight: 10,
   },
   detailsText: {
