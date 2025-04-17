@@ -463,8 +463,8 @@ export function AppProvider({ children }) {
 
   const [error, setError] = useState("");
   const navigation = useNavigation();
-  const localip = "http://192.168.0.110:6969";
-  // const ip = "https://studymate.keabafrica.com";
+  // const localip = "http://192.168.0.110:6969";
+  const ip = "https://studymate.keabafrica.com";
   const ip = localip;
   const [allFlashCards, setAllFlashCards] = useState([]);
   const [allQuestions, setAllQuestions] = useState([]);
