@@ -34,10 +34,12 @@ export default function SummariesListItem({ conversation = {} }) {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.primary500,
-    marginBlock: 10,
+    backgroundColor: "#fff",
+    marginTop: 0,
+    marginBlock: 18,
     padding: 10,
     borderRadius: 8,
+    elevation: 2
   },
   initialSummaryStyling: {
     fontSize: 14,

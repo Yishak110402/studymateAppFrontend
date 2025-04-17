@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 17,
-    color: COLORS.primary100,
+    color: COLORS.primary700,
     marginLeft: 7,
     marginBottom: 10,
   },
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   },
   subHeader: {
     fontSize: 13,
-    color: COLORS.primary300,
+    color: COLORS.primary700,
     marginTop: 15,
     marginBottom: 10,
     marginLeft: 7,
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   nextBtn: {
-    backgroundColor: COLORS.primary100,
+    backgroundColor: COLORS.primary700,
     borderRadius: 8,
     marginTop: 10,
     padding: 11,
@@ -206,6 +206,7 @@ const styles = StyleSheet.create({
   },
   nextButtonText: {
     fontSize: 17,
+    color: COLORS.primary100
   },
   errorInput: {
     backgroundColor: COLORS.error,

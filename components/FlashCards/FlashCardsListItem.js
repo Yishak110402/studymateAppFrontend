@@ -39,7 +39,7 @@ export default function FlashCardListItem({ flashCard = { name: "Name" } }) {
             ])
           }}>
             <View>
-              <Ionicons name="trash-bin" color={COLORS.primary700} size={25} />
+              <Ionicons name="trash-bin" color={"#e22926"} size={30} />
             </View>
           </TouchableOpacity>
         </View>

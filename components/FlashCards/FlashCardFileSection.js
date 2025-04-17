@@ -84,12 +84,12 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   header: {
-    fontSize: 15,
-    color: COLORS.primary100,
+    fontSize: 18,
+    color: COLORS.primary700,
   },
   buttonContainer: {
-    backgroundColor: COLORS.primary100,
-    width: 150,
+    backgroundColor: COLORS.primary700,
+    width: 120,
     padding: 12,
     justifyContent: "center",
     alignItems: "center",
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   buttonText: {
-    color: COLORS.primary700,
-    fontSize: 17,
+    color: COLORS.primary100,
+    fontSize: 15,
   },
 });

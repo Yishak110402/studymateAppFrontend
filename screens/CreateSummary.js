@@ -38,7 +38,7 @@ export default function Summaries() {
       </View>
       <TouchableOpacity onPress={createNewSummary}>
         <View style={styles.addBtnContainer}>
-          <Ionicons name="add" color={COLORS.primary300} size={25} />
+          <Ionicons name="add" color={COLORS.primary100} size={30} />
         </View>
       </TouchableOpacity>
       {creatingSummary && <LoadingScreen text={"Creating Conversation... "} />}
@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 999,
     alignSelf:'center',
-    marginTop: 5
+    marginTop: 5,
+    backgroundColor: COLORS.primary700
   },
 });

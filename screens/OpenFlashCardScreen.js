@@ -71,7 +71,7 @@ export default function OpenFlashCardScreen() {
         </Text>
         <FlashCardNavigationButton pressFunction={nextQuestion} text={"Next"} />
       </View>
-      <Pressable
+      {/* <Pressable
         android_ripple={{ color: COLORS.primary500 }}
         style={styles.deleteButtonContainer}
         onPress={() => {
@@ -80,7 +80,7 @@ export default function OpenFlashCardScreen() {
         <View>
           <Text style={styles.deleteButtonText}>Delete Flashcard</Text>
         </View>
-      </Pressable>
+      </Pressable> */}
       {deletingFlashCard && <LoadingScreen text={"Deleting Flashcard"} />}
     </View>
   );

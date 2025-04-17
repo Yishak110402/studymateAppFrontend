@@ -57,19 +57,20 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: COLORS.primary700,
     borderRadius: 15,
+    elevation: 1
   },
   invalidInput: {
     backgroundColor: COLORS.error,
   },
   inputLabel: {
-    fontSize: 15,
-    color: COLORS.primary100,
+    fontSize: 19,
+    color: COLORS.primary700,
     marginLeft: 10,
     marginBottom: 15,
   },
   nextButtonContainer: {
     width: 60,
-    backgroundColor: COLORS.primary100,
+    backgroundColor: COLORS.primary700,
     marginTop: 16,
     padding: 5,
     marginLeft: 0,
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   nextButtonText: {
-    color: COLORS.primary700,
+    color: COLORS.primary100,
     fontSize: 17,
   },
 });
