@@ -486,6 +486,7 @@ export function AppProvider({ children }) {
   const [currentConversation, setCurrentConversation] = useState({});
   const [fetchingConversation, setFetchingConversation] = useState(false);
   const [awaitingAnswer, setAwaitingAnswer] = useState(false);
+  const [deletingConversation, setDeletingConversation] = useState(false);
 
   const verifyUser = async () => {
     console.log("Started Verification...");
@@ -507,7 +508,7 @@ export function AppProvider({ children }) {
     });
     if (!res.ok) {
       Alert.alert("Error", "Something Went Wrong. Try again later");
-      BackHandler.exitApp()
+      BackHandler.exitApp();
       return;
     }
     const data = await res.json();
@@ -673,11 +674,11 @@ export function AppProvider({ children }) {
   };
 
   const deleteFlashcard = async (id) => {
-    if(deletingFlashCard) return
+    if (deletingFlashCard) return;
     console.log("Delete started");
-    if(!id){
-      Alert.alert("Error", "Flashcard ID not provided")
-      return
+    if (!id) {
+      Alert.alert("Error", "Flashcard ID not provided");
+      return;
     }
     setDeletingFlashCard(true);
     const res = await fetch(`${ip}/generate/flashcards/${id}`, {
@@ -788,8 +789,8 @@ export function AppProvider({ children }) {
   };
 
   const sendQuestionAndReceiveAnswer = async (id) => {
-    if(awaitingAnswer){
-      return
+    if (awaitingAnswer) {
+      return;
     }
     setQuestion("");
     Keyboard.dismiss();
@@ -866,27 +867,33 @@ export function AppProvider({ children }) {
     setFetchingConversation(false);
   };
 
-  const deleteConversation = async(id)=>{
-    if(!id){
-      Alert.alert("Error", "You need to provide a conversation ID")
-      return
+  const deleteConversation = async (id) => {    
+    if (!id) {
+      Alert.alert("Error", "You need to provide a conversation ID");
+      return;
     }
-    const res = await fetch(`${ip}/conversation/${id}`,{
-      method:"DELETE"
-    })
-    if(!res.ok){
-      Alert.alert("Error", "Something went wrong. Try again later")
-      return
+    setDeletingConversation(true);
+    const res = await fetch(`${ip}/conversation/${id}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      setDeletingConversation(false);
+      Alert.alert("Error", "Something went wrong. Try again later");
+      return;
     }
-    const data = await res.json()
-    if(data.status=== "fail"){
-      Alert.alert("Error", data.message)
-      return
+    const data = await res.json();
+    if (data.status === "fail") {
+      setDeletingConversation(false);
+      Alert.alert("Error", data.message);
+      return;
     }
-    setSummaries((all)=>(all.filter((conv)=>{
-      return conv.id !== id
-    })))
-  }
+    setSummaries((all) =>
+      all.filter((conv) => {
+        return conv.id !== id;
+      })
+    );
+    setDeletingConversation(false);
+  };
 
   const value = {
     dummyFlashCards,
@@ -933,7 +940,9 @@ export function AppProvider({ children }) {
     setCurrentConversation,
     getCurrentConversation,
     fetchingConversation,
-    awaitingAnswer
+    awaitingAnswer,
+    deleteConversation,
+    deletingConversation
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

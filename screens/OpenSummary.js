@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   conversationsContainer: {
-    backgroundColor: COLORS.primary500,
+    backgroundColor: COLORS.primary100,
     flex: 1,
     paddingInline: 10,
     paddingTop: 15,

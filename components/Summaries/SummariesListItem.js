@@ -1,8 +1,11 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../../constants/COLORS";
 import { useNavigation } from "@react-navigation/native";
+import { useContext } from "react";
+import { AppContext } from "../../context/AppContext";
 
 export default function SummariesListItem({ conversation = {} }) {
+  const {deleteConversation} = useContext(AppContext)
   const navigation = useNavigation();
   const goToSelectedSummary = () => {
     navigation.navigate("Open Summary", {
@@ -21,7 +24,7 @@ export default function SummariesListItem({ conversation = {} }) {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=> deleteConversation(conversation.id)}>
           <View style={styles.deleteConversationButton}>
             <Text style={styles.deleteConversationButtonText}>
               Delete Conversation

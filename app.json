@@ -4,11 +4,11 @@
     "slug": "my-new-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/ethiopia image.jpg",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/ethiopia image.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#f7f7f7"
     },

@@ -21,7 +21,8 @@ export default function Summaries() {
     summaries,
     createNewSummary,
     creatingSummary,
-    setQuestion,
+    setQuestion, 
+    deletingConversation
   } = useContext(AppContext);
   useEffect(function () {
     getUserSummaries();
@@ -30,9 +31,10 @@ export default function Summaries() {
     <View style={styles.container}>
       {loadingSummaries && <LoadingScreen text={"Loading Summaries..."} />}
       <View>
-        {!loadingSummaries && summaries.length !== 0 && (
+        {deletingConversation && <LoadingScreen text={"Deleting Conversation"} />}
+        {!loadingSummaries && summaries.length === 0 && (
           <View>
-            <Text>No Conversations Created</Text>
+            <Text style={styles.noConvoText}>No Conversations Created</Text>
           </View>
         )}
         {!loadingSummaries && (
@@ -82,4 +84,10 @@ const styles = StyleSheet.create({
     marginTop: 5,
     backgroundColor: COLORS.primary700,
   },
+  noConvoText:{
+    color: COLORS.primary700,
+    textAlign:'center',
+    fontSize:17,
+    marginBottom: 10
+  }
 });
